@@ -1,0 +1,14 @@
+# 网络请求（curl_cffi 模拟浏览器 TLS/JA3 指纹，防反爬）
+curl_cffi>=0.7.0
+
+# HTML解析
+beautifulsoup4==4.12.2
+
+# 数据处理
+pandas==3.0.1
+
+# 进度显示
+tqdm==4.66.1
+
+# 日志记录
+loguru==0.7.2
