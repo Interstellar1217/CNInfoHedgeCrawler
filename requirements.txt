@@ -12,3 +12,6 @@ tqdm==4.66.1
 
 # 日志记录
 loguru==0.7.2
+
+# PDF解析
+pdfplumber==0.11.4

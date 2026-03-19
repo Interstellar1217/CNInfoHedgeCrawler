@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# 数据文件（PDF 体积大，不入库）
+data/*.pdf
+data/*.PDF
+
+# 元数据 CSV 可选择性入库，默认忽略
+# data/announcements_metadata.csv
+
+# 日志
+logs/
+*.log
+
+# 环境变量 / 密钥（如果改用 .env 存 Webhook）
+.env
+.env.*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/

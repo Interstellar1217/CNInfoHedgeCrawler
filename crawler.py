@@ -34,6 +34,8 @@ from util import (
     save_metadata,
     retry_on_failure,
 )
+from extractors.extractor import extract_hedge_info
+from notifiers.notifier import send_to_wecom
 
 
 class CNInfoHedgeCrawler:
@@ -401,6 +403,13 @@ class CNInfoHedgeCrawler:
                 self.downloaded_ids.add(announcement_id)
                 downloaded.append(announcement)
                 logger.success(f"下载成功: {announcement['title']}")
+
+                # 提取 PDF 关键信息并推送企业微信
+                try:
+                    info = extract_hedge_info(save_path, announcement)
+                    send_to_wecom(info)
+                except Exception as e:
+                    logger.warning(f"提取/推送失败，不影响下载流程: {e}")
             else:
                 logger.error(f"下载失败: {announcement['title']}")
 

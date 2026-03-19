@@ -85,6 +85,10 @@ class Config:
         "北交所": "bj",
     }
 
+    # 企业微信机器人配置
+    # 在企业微信群中添加机器人后，将 Webhook URL 填入此处
+    WECOM_WEBHOOK_URL = ""  # 例如: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx
+
     @classmethod
     def get_random_delay(cls) -> float:
         """
