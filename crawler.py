@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Generator
 from datetime import datetime
 
+import pandas as pd
 from curl_cffi import requests
 from curl_cffi.requests import Session
 from tqdm import tqdm
@@ -137,7 +138,7 @@ class CNInfoHedgeCrawler:
 
             if not response.text:
                 logger.error(f"第 {page_num} 页响应体为空，可能被反爬拦截")
-                raise requests.RequestException("Empty response body")
+                raise requests.RequestsError("Empty response body")
 
             data = response.json()
 
@@ -149,7 +150,7 @@ class CNInfoHedgeCrawler:
             logger.debug(f"成功获取第 {page_num} 页数据，共 {len(data.get('announcements', []))} 条公告")
             return data
 
-        except requests.RequestException as e:
+        except requests.RequestsError as e:
             logger.error(f"请求第 {page_num} 页时发生网络错误: {e}")
             raise  # 让重试装饰器处理
         except json.JSONDecodeError as e:
@@ -177,9 +178,13 @@ class CNInfoHedgeCrawler:
                 raw_title = item.get('announcementTitle', '') or ''
                 clean_title = raw_title.replace('<em>', '').replace('</em>', '')
 
+                # 股票代码处理：API返回可能是数字类型，需要补前导0至6位
+                sec_code_raw = item.get('secCode', '')
+                sec_code = str(sec_code_raw).zfill(6) if sec_code_raw else ''
+
                 announcement = {
                     'announcementId': str(item.get('announcementId', '')),
-                    'secCode': item.get('secCode', ''),
+                    'secCode': sec_code,
                     'secName': item.get('secName', ''),
                     'orgId': item.get('orgId', ''),
                     'title': clean_title,
@@ -459,8 +464,19 @@ class CNInfoHedgeCrawler:
 
             logger.info(f"正在处理第 {page} 页...")
 
-            # 爬取当前页
-            downloaded = self.crawl_page(page, start_date=start_date, end_date=end_date)
+            try:
+                # 爬取当前页
+                downloaded = self.crawl_page(page, start_date=start_date, end_date=end_date)
+            except Exception as e:
+                logger.error(f"第 {page} 页爬取失败: {e}")
+                consecutive_empty += 1
+                logger.warning(f"连续空页计数: {consecutive_empty}/3")
+                if consecutive_empty >= 3:
+                    logger.info("连续3页爬取失败，停止爬取")
+                    break
+                page += 1
+                random_delay()
+                continue
 
             stats['total_pages'] += 1
             stats['total_announcements'] += len(downloaded)
