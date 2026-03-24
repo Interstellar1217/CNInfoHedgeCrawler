@@ -11430,3 +11430,525 @@
 2026-03-18 15:15:02 | WARNING  | util:wrapper:260 - 第 3 次尝试失败: object of type 'NoneType' has no len()
 2026-03-18 15:15:02 | ERROR    | util:wrapper:266 - 已达到最大重试次数 3，放弃请求
 2026-03-18 15:15:02 | ERROR    | __main__:main:557 - 程序运行出错: object of type 'NoneType' has no len()
+2026-03-24 14:37:57 | INFO     | util:setup_logger:62 - 日志系统初始化完成
+2026-03-24 14:37:57 | DEBUG    | util:ensure_directories:79 - 确保目录存在: data
+2026-03-24 14:37:57 | DEBUG    | util:ensure_directories:79 - 确保目录存在: logs
+2026-03-24 14:37:57 | ERROR    | __main__:_load_downloaded_ids:98 - 加载已下载记录失败: name 'pd' is not defined
+2026-03-24 14:37:57 | INFO     | __main__:__init__:66 - 爬虫初始化完成，搜索关键词: 套期保值
+2026-03-24 14:37:57 | INFO     | __main__:search_by_date:515 - 按日期范围搜索: 2025-03-17 至 2025-03-24
+2026-03-24 14:37:57 | INFO     | __main__:crawl_all:456 - 开始爬取，关键词: 套期保值
+2026-03-24 14:37:57 | INFO     | __main__:crawl_all:464 - 正在处理第 1 页...
+2026-03-24 14:37:57 | DEBUG    | __main__:fetch_announcement_list:126 - 请求第 1 页公告列表
+2026-03-24 14:37:57 | DEBUG    | __main__:fetch_announcement_list:149 - 成功获取第 1 页数据，共 30 条公告
+2026-03-24 14:37:57 | INFO     | __main__:crawl_page:383 - 第 1 页发现 30 条新公告
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 金能科技股份有限公司关于2025年度继续开展套期保值业务的公告_1222871638.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展商品期货套期保值业务的可行性分析报告_1222870702.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展外汇套期保值业务的可行性分析报告_1222870693.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展外汇套期保值业务的公告_1222870685.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展商品期货套期保值业务的公告_1222870682.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 广西华锡有色金属股份有限公司关于2025年度期货套期保值计划的公告_1222869946.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 广西华锡有色金属股份有限公司开展期货套期保值业务的可行性分析报告_1222869944.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展套期保值业务的可行性分析报告_1222868531.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于2025年套期保值业务预计的公告_1222868527.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于控股子公司开展商品期货套期保值业务的公告_1222867768.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 财信证券股份有限公司关于陈克明食品股份有限公司控股子公司开展商品期货套期保值业务的核查意见_1222867763.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 控股子公司开展商品期货套期保值业务可行性分析报告_1222867761.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 秦安股份关于开展原材料及外汇套期保值的公告_1222867237.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 秦安股份关于开展原材料及外汇套期保值业务的可行性分析报告_1222867217.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展期货套期保值业务的可行性分析报告_1222866985.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展外汇套期保值业务的可行性分析报告_1222866983.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展外汇套期保值业务的公告_1222866974.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展期货套期保值业务的公告_1222866957.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展衍生品套期保值业务的公告_1222865579.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展衍生品套期保值业务的可行性分析报告_1222865574.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展外汇套期保值业务的公告_1222858254.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 2024年度外汇套期保值业务投资情况的专项报告_1222858240.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于公司开展外汇套期保值业务的可行性分析报告_1222858234.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 中信建投证券股份有限公司关于公司2024年度外汇套期保值业务投资情况专项报告的核查意见_1222858222.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 中信建投证券股份有限公司关于公司开展外汇套期保值业务的核查意见_1222858220.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于2025年开展套期保值业务的可行性分析报告_1222857420.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展套期保值业务的公告_1222857404.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 桃李面包关于开展外汇套期保值业务的公告_1222856780.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展期货套期保值业务的公告_1222857559.pdf
+2026-03-24 14:37:57 | DEBUG    | __main__:crawl_page:400 - 文件已存在: 关于开展期货套期保值业务的可行性分析报告_1222857556.pdf
+2026-03-24 14:37:57 | ERROR    | __main__:main:570 - 程序运行出错: name 'pd' is not defined
+2026-03-24 14:40:55 | INFO     | util:setup_logger:62 - 日志系统初始化完成
+2026-03-24 14:40:55 | DEBUG    | util:ensure_directories:79 - 确保目录存在: data
+2026-03-24 14:40:55 | DEBUG    | util:ensure_directories:79 - 确保目录存在: logs
+2026-03-24 14:40:55 | INFO     | __main__:_load_downloaded_ids:95 - 已加载 3489 条下载记录
+2026-03-24 14:40:55 | INFO     | __main__:__init__:67 - 爬虫初始化完成，搜索关键词: 套期保值
+2026-03-24 14:40:55 | INFO     | __main__:search_by_date:516 - 按日期范围搜索: 2025-03-17 至 2025-03-24
+2026-03-24 14:40:55 | INFO     | __main__:crawl_all:457 - 开始爬取，关键词: 套期保值
+2026-03-24 14:40:55 | INFO     | __main__:crawl_all:465 - 正在处理第 1 页...
+2026-03-24 14:40:55 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 1 页公告列表
+2026-03-24 14:40:55 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 1 页数据，共 30 条公告
+2026-03-24 14:40:55 | INFO     | __main__:crawl_page:381 - 第 1 页所有公告都已下载过
+2026-03-24 14:40:55 | DEBUG    | __main__:crawl_all:478 - 第 1 页无新数据，连续空页: 1
+2026-03-24 14:40:55 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:40:55 | DEBUG    | util:random_delay:90 - 随机延时 2.38 秒
+2026-03-24 14:40:58 | INFO     | __main__:crawl_all:465 - 正在处理第 2 页...
+2026-03-24 14:40:58 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 2 页公告列表
+2026-03-24 14:40:58 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 2 页数据，共 13 条公告
+2026-03-24 14:40:58 | INFO     | __main__:crawl_page:381 - 第 2 页所有公告都已下载过
+2026-03-24 14:40:58 | DEBUG    | __main__:crawl_all:478 - 第 2 页无新数据，连续空页: 2
+2026-03-24 14:40:58 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:40:58 | DEBUG    | util:random_delay:90 - 随机延时 2.40 秒
+2026-03-24 14:41:00 | INFO     | __main__:crawl_all:465 - 正在处理第 3 页...
+2026-03-24 14:41:00 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 3 页公告列表
+2026-03-24 14:41:00 | WARNING  | util:wrapper:260 - 第 1 次尝试失败: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:41:00 | INFO     | util:wrapper:263 - 2 秒后进行第 2 次重试...
+2026-03-24 14:41:02 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 3 页公告列表
+2026-03-24 14:41:02 | WARNING  | util:wrapper:260 - 第 2 次尝试失败: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:41:02 | INFO     | util:wrapper:263 - 2 秒后进行第 3 次重试...
+2026-03-24 14:41:04 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 3 页公告列表
+2026-03-24 14:41:04 | WARNING  | util:wrapper:260 - 第 3 次尝试失败: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:41:04 | ERROR    | util:wrapper:266 - 已达到最大重试次数 3，放弃请求
+2026-03-24 14:41:04 | ERROR    | __main__:main:571 - 程序运行出错: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:41:14 | INFO     | util:setup_logger:62 - 日志系统初始化完成
+2026-03-24 14:41:14 | DEBUG    | util:ensure_directories:79 - 确保目录存在: data
+2026-03-24 14:41:14 | DEBUG    | util:ensure_directories:79 - 确保目录存在: logs
+2026-03-24 14:41:14 | INFO     | __main__:_load_downloaded_ids:95 - 已加载 3489 条下载记录
+2026-03-24 14:41:14 | INFO     | __main__:__init__:67 - 爬虫初始化完成，搜索关键词: 套期保值
+2026-03-24 14:41:14 | INFO     | __main__:search_by_date:516 - 按日期范围搜索: 2026-03-17 至 2026-03-24
+2026-03-24 14:41:14 | INFO     | __main__:crawl_all:457 - 开始爬取，关键词: 套期保值
+2026-03-24 14:41:14 | INFO     | __main__:crawl_all:465 - 正在处理第 1 页...
+2026-03-24 14:41:14 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 1 页公告列表
+2026-03-24 14:41:14 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 1 页数据，共 30 条公告
+2026-03-24 14:41:14 | INFO     | __main__:crawl_page:384 - 第 1 页发现 30 条新公告
+2026-03-24 14:41:14 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品期货套期保值业务的公告_1225026683.pdf
+2026-03-24 14:41:14 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品期货套期保值业务的公告
+2026-03-24 14:41:14 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600331] 品种=外汇、锌 额度=20,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:41:14 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:14 | DEBUG    | util:random_delay:90 - 随机延时 2.33 秒
+2026-03-24 14:41:17 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\中信证券关于四川宏达股份有限公司开展商品期货套期保值业务的核查意见_1225026677.pdf
+2026-03-24 14:41:17 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 中信证券关于四川宏达股份有限公司开展商品期货套期保值业务的核查意见
+2026-03-24 14:41:17 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600331] 品种=锌 额度=20,000万元 有效期= 管理制度=False
+2026-03-24 14:41:17 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:17 | DEBUG    | util:random_delay:90 - 随机延时 2.89 秒
+2026-03-24 14:41:20 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品期货套期保值业务的可行性分析报告_1225026660.pdf
+2026-03-24 14:41:20 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品期货套期保值业务的可行性分析报告
+2026-03-24 14:41:20 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600331] 品种=锌 额度=20,000万元 有效期= 管理制度=False
+2026-03-24 14:41:20 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:20 | DEBUG    | util:random_delay:90 - 随机延时 1.21 秒
+2026-03-24 14:41:21 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225026536.pdf
+2026-03-24 14:41:21 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:41:22 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002050] 品种=外汇、人民币 额度=85亿元 有效期= 管理制度=False
+2026-03-24 14:41:22 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:22 | DEBUG    | util:random_delay:90 - 随机延时 1.77 秒
+2026-03-24 14:41:24 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展期货套期保值业务的公告_1225026535.pdf
+2026-03-24 14:41:24 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展期货套期保值业务的公告
+2026-03-24 14:41:24 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002050] 品种=铜、人民币 额度=2亿元 有效期= 管理制度=False
+2026-03-24 14:41:24 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:24 | DEBUG    | util:random_delay:90 - 随机延时 1.16 秒
+2026-03-24 14:41:25 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\河南神火煤电股份有限公司关于开展套期保值业务的可行性分析_1225026199.pdf
+2026-03-24 14:41:25 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 河南神火煤电股份有限公司关于开展套期保值业务的可行性分析
+2026-03-24 14:41:25 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [000933] 品种=铝 额度=60.00亿元；8.00亿元 有效期=12个月 管理制度=False
+2026-03-24 14:41:25 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:25 | DEBUG    | util:random_delay:90 - 随机延时 2.16 秒
+2026-03-24 14:41:29 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\河南神火煤电股份有限关于2026年度继续开展商品期货套期保值业务的公告_1225026198.pdf
+2026-03-24 14:41:29 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 河南神火煤电股份有限关于2026年度继续开展商品期货套期保值业务的公告
+2026-03-24 14:41:29 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [000933] 品种=人民币、铝 额度=8.00亿元；60.00亿元 有效期=12个月 管理制度=False
+2026-03-24 14:41:29 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:29 | DEBUG    | util:random_delay:90 - 随机延时 1.93 秒
+2026-03-24 14:41:31 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品衍生品套期保值业务的可行性分析报告_1225026069.pdf
+2026-03-24 14:41:31 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品衍生品套期保值业务的可行性分析报告
+2026-03-24 14:41:32 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002648] 品种= 额度=10亿元；60亿元 有效期= 管理制度=False
+2026-03-24 14:41:32 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:32 | DEBUG    | util:random_delay:90 - 随机延时 2.54 秒
+2026-03-24 14:41:34 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的可行性分析报告_1225026068.pdf
+2026-03-24 14:41:34 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:41:34 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002648] 品种=外汇、美元 额度=15亿元；25亿美元 有效期= 管理制度=False
+2026-03-24 14:41:34 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:34 | DEBUG    | util:random_delay:90 - 随机延时 2.47 秒
+2026-03-24 14:41:37 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225026067.pdf
+2026-03-24 14:41:37 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:41:37 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002648] 品种=外汇、美元 额度=15亿元；25亿美元 有效期= 管理制度=False
+2026-03-24 14:41:37 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:37 | DEBUG    | util:random_delay:90 - 随机延时 2.35 秒
+2026-03-24 14:41:40 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品衍生品套期保值业务的公告_1225026066.pdf
+2026-03-24 14:41:40 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品衍生品套期保值业务的公告
+2026-03-24 14:41:40 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002648] 品种= 额度=10亿元；60亿元 有效期= 管理制度=False
+2026-03-24 14:41:40 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:40 | DEBUG    | util:random_delay:90 - 随机延时 2.08 秒
+2026-03-24 14:41:42 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\华勤技术关于2026年度外汇套期保值业务的公告_1225025962.pdf
+2026-03-24 14:41:42 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 华勤技术关于2026年度外汇套期保值业务的公告
+2026-03-24 14:41:42 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [603296] 品种=外汇、美元 额度=5亿美元或等值外币；50亿美元或等值外币 有效期= 管理制度=False
+2026-03-24 14:41:42 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:42 | DEBUG    | util:random_delay:90 - 随机延时 1.57 秒
+2026-03-24 14:41:44 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于公司及控股子公司开展期货套期保值业务的公告_1225025550.pdf
+2026-03-24 14:41:44 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于公司及控股子公司开展期货套期保值业务的公告
+2026-03-24 14:41:44 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [603486] 品种=外汇、人民币 额度=4,500万元；30,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:41:44 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:44 | DEBUG    | util:random_delay:90 - 随机延时 1.16 秒
+2026-03-24 14:41:45 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于公司及控股子公司开展期货套期保值业务的可行性分析报告_1225025538.pdf
+2026-03-24 14:41:45 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于公司及控股子公司开展期货套期保值业务的可行性分析报告
+2026-03-24 14:41:45 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [603486] 品种=人民币、碳酸锂 额度=4,500万元；30,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:41:45 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:45 | DEBUG    | util:random_delay:90 - 随机延时 1.24 秒
+2026-03-24 14:41:47 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\高新兴科技集团股份有限公司外汇套期保值业务可行性分析报告_1225025271.pdf
+2026-03-24 14:41:47 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 高新兴科技集团股份有限公司外汇套期保值业务可行性分析报告
+2026-03-24 14:41:47 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [300098] 品种=外汇、美元 额度=1,000万美元 有效期=12个月 管理制度=False
+2026-03-24 14:41:47 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:47 | DEBUG    | util:random_delay:90 - 随机延时 1.53 秒
+2026-03-24 14:41:49 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于公司开展外汇套期保值业务的公告_1225025270.pdf
+2026-03-24 14:41:49 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于公司开展外汇套期保值业务的公告
+2026-03-24 14:41:49 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [300098] 品种=外汇、美元 额度=1,000万美元 有效期=12个月 管理制度=False
+2026-03-24 14:41:49 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:49 | DEBUG    | util:random_delay:90 - 随机延时 2.52 秒
+2026-03-24 14:41:51 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\开展商品期货套期保值业务可行性分析报告_1225025244.pdf
+2026-03-24 14:41:51 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 开展商品期货套期保值业务可行性分析报告
+2026-03-24 14:41:52 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [300489] 品种=铝 额度=6,500万元；3亿元 有效期=12个月 管理制度=False
+2026-03-24 14:41:52 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:52 | DEBUG    | util:random_delay:90 - 随机延时 1.17 秒
+2026-03-24 14:41:53 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品期货套期保值业务的公告_1225025243.pdf
+2026-03-24 14:41:53 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品期货套期保值业务的公告
+2026-03-24 14:41:53 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [300489] 品种=人民币、铝 额度=6,500万元；3亿元 有效期=12个月 管理制度=False
+2026-03-24 14:41:53 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:53 | DEBUG    | util:random_delay:90 - 随机延时 2.87 秒
+2026-03-24 14:41:56 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225025196.pdf
+2026-03-24 14:41:56 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:41:56 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [603259] 品种=外汇、美元 额度=900,000万美元 有效期= 管理制度=False
+2026-03-24 14:41:56 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:56 | DEBUG    | util:random_delay:90 - 随机延时 1.46 秒
+2026-03-24 14:41:58 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\壹石通关于2026年度开展期货套期保值业务的可行性分析报告_1225024575.pdf
+2026-03-24 14:41:58 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 壹石通关于2026年度开展期货套期保值业务的可行性分析报告
+2026-03-24 14:41:58 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688733] 品种=人民币、铝 额度=500.00万元；4,160.00万元 有效期=12个月 管理制度=False
+2026-03-24 14:41:58 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:41:58 | DEBUG    | util:random_delay:90 - 随机延时 1.74 秒
+2026-03-24 14:42:00 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\壹石通关于2026年度开展期货套期保值业务的公告_1225024574.pdf
+2026-03-24 14:42:00 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 壹石通关于2026年度开展期货套期保值业务的公告
+2026-03-24 14:42:00 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688733] 品种=外汇、人民币、铝 额度=500.00万元；4,160.00万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:00 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:00 | DEBUG    | util:random_delay:90 - 随机延时 2.53 秒
+2026-03-24 14:42:03 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\福然德股份有限公司关于开展期货套期保值业务的可行性分析报告_1225024346.pdf
+2026-03-24 14:42:03 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 福然德股份有限公司关于开展期货套期保值业务的可行性分析报告
+2026-03-24 14:42:03 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [605050] 品种=热轧卷板、人民币 额度=3,000.00万元；30,000.00万元 有效期= 管理制度=False
+2026-03-24 14:42:03 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:03 | DEBUG    | util:random_delay:90 - 随机延时 1.99 秒
+2026-03-24 14:42:05 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\福然德股份有限公司关于开展期货套期保值业务的公告_1225024343.pdf
+2026-03-24 14:42:05 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 福然德股份有限公司关于开展期货套期保值业务的公告
+2026-03-24 14:42:05 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [605050] 品种=外汇、人民币 额度=3,000.00万元；30,000.00万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:05 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:05 | DEBUG    | util:random_delay:90 - 随机延时 2.43 秒
+2026-03-24 14:42:08 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\福然德股份有限公司期货及衍生品套期保值业务管理制度_1225024341.pdf
+2026-03-24 14:42:08 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 福然德股份有限公司期货及衍生品套期保值业务管理制度
+2026-03-24 14:42:08 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [605050] 品种= 额度= 有效期=12个月 管理制度=True
+2026-03-24 14:42:08 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 福然德股份有限公司期货及衍生品套期保值业务管理制度
+2026-03-24 14:42:08 | DEBUG    | util:random_delay:90 - 随机延时 2.51 秒
+2026-03-24 14:42:11 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品期货套期保值业务的可行性分析报告_1225024296.pdf
+2026-03-24 14:42:11 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品期货套期保值业务的可行性分析报告
+2026-03-24 14:42:11 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002530] 品种=锡、镍、人民币 额度=600万元；2,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:11 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:11 | DEBUG    | util:random_delay:90 - 随机延时 1.53 秒
+2026-03-24 14:42:12 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品期货套期保值业务的公告_1225024295.pdf
+2026-03-24 14:42:12 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品期货套期保值业务的公告
+2026-03-24 14:42:13 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002530] 品种=镍、人民币 额度=600万元；2,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:13 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:13 | DEBUG    | util:random_delay:90 - 随机延时 2.31 秒
+2026-03-24 14:42:16 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\外汇套期保值业务管理制度_1225025894.pdf
+2026-03-24 14:42:16 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 外汇套期保值业务管理制度
+2026-03-24 14:42:17 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920641] 品种=外汇、人民币 额度= 有效期=12个月 管理制度=True
+2026-03-24 14:42:17 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 外汇套期保值业务管理制度
+2026-03-24 14:42:17 | DEBUG    | util:random_delay:90 - 随机延时 2.46 秒
+2026-03-24 14:42:19 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\期货套期保值业务管理制度_1225025893.pdf
+2026-03-24 14:42:19 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 期货套期保值业务管理制度
+2026-03-24 14:42:20 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920641] 品种=外汇 额度= 有效期=10年 管理制度=True
+2026-03-24 14:42:20 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 期货套期保值业务管理制度
+2026-03-24 14:42:20 | DEBUG    | util:random_delay:90 - 随机延时 1.41 秒
+2026-03-24 14:42:21 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\外汇套期保值业务管理制度_1225022682.pdf
+2026-03-24 14:42:21 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 外汇套期保值业务管理制度
+2026-03-24 14:42:21 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002843] 品种=外汇 额度= 有效期=12个月 管理制度=True
+2026-03-24 14:42:21 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 外汇套期保值业务管理制度
+2026-03-24 14:42:21 | DEBUG    | util:random_delay:90 - 随机延时 1.54 秒
+2026-03-24 14:42:23 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的可行性分析报告_1225022678.pdf
+2026-03-24 14:42:23 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:42:23 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002843] 品种=外汇、人民币、美元 额度=15,000万元；2,000万元 有效期= 管理制度=False
+2026-03-24 14:42:23 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:23 | DEBUG    | util:random_delay:90 - 随机延时 1.46 秒
+2026-03-24 14:42:25 | INFO     | __main__:save_metadata_to_csv:346 - 元数据已保存到 data\announcements_metadata.csv，新增 30 条记录
+2026-03-24 14:42:25 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:42:25 | DEBUG    | util:random_delay:90 - 随机延时 2.04 秒
+2026-03-24 14:42:27 | INFO     | __main__:crawl_all:465 - 正在处理第 2 页...
+2026-03-24 14:42:27 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 2 页公告列表
+2026-03-24 14:42:27 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 2 页数据，共 30 条公告
+2026-03-24 14:42:27 | INFO     | __main__:crawl_page:384 - 第 2 页发现 30 条新公告
+2026-03-24 14:42:27 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225022677.pdf
+2026-03-24 14:42:27 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:42:28 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002843] 品种=美元、外汇、人民币 额度=15,000万元；2,000万元 有效期= 管理制度=False
+2026-03-24 14:42:28 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:28 | DEBUG    | util:random_delay:90 - 随机延时 1.73 秒
+2026-03-24 14:42:29 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展套期保值型金融衍生品交易业务的可行性分析报告_1225022670.pdf
+2026-03-24 14:42:29 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展套期保值型金融衍生品交易业务的可行性分析报告
+2026-03-24 14:42:30 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002294] 品种=外汇、美元 额度=4,000万美元 有效期=12个月 管理制度=False
+2026-03-24 14:42:30 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:30 | DEBUG    | util:random_delay:90 - 随机延时 1.43 秒
+2026-03-24 14:42:31 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展套期保值型金融衍生品交易业务的公告_1225022669.pdf
+2026-03-24 14:42:31 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展套期保值型金融衍生品交易业务的公告
+2026-03-24 14:42:31 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002294] 品种=美元 额度=4,000万美元 有效期=12个月 管理制度=False
+2026-03-24 14:42:31 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:31 | DEBUG    | util:random_delay:90 - 随机延时 1.79 秒
+2026-03-24 14:42:33 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225022643.pdf
+2026-03-24 14:42:33 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:42:33 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [301222] 品种=人民币、外汇 额度=4亿元或等值外币的外汇套期保 有效期= 管理制度=False
+2026-03-24 14:42:33 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:33 | DEBUG    | util:random_delay:90 - 随机延时 2.14 秒
+2026-03-24 14:42:36 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于调整外汇衍生品套期保值业务额度的可行性分析报告_1225022561.pdf
+2026-03-24 14:42:36 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于调整外汇衍生品套期保值业务额度的可行性分析报告
+2026-03-24 14:42:36 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [000795] 品种=外汇 额度=3亿美元 有效期=12个月 管理制度=False
+2026-03-24 14:42:36 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:36 | DEBUG    | util:random_delay:90 - 随机延时 2.47 秒
+2026-03-24 14:42:39 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于调整2026年度外汇衍生品套期保值业务额度的公告_1225022560.pdf
+2026-03-24 14:42:39 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于调整2026年度外汇衍生品套期保值业务额度的公告
+2026-03-24 14:42:39 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [000795] 品种=外汇、人民币、美元 额度=3亿美元；13亿元 有效期=12个月 管理制度=False
+2026-03-24 14:42:39 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:39 | DEBUG    | util:random_delay:90 - 随机延时 2.77 秒
+2026-03-24 14:42:42 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\宁波富佳实业股份有限公司关于开展外汇套期保值业务的公告_1225022400.pdf
+2026-03-24 14:42:42 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 宁波富佳实业股份有限公司关于开展外汇套期保值业务的公告
+2026-03-24 14:42:42 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [603219] 品种=外汇、人民币 额度=5,000万元或等值外币；10.00亿元或等值外币 有效期=12个月 管理制度=False
+2026-03-24 14:42:42 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:42 | DEBUG    | util:random_delay:90 - 随机延时 2.41 秒
+2026-03-24 14:42:44 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\宁波富佳实业股份有限公司开展外汇套期保值业务的可行性分析报告_1225022393.pdf
+2026-03-24 14:42:44 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 宁波富佳实业股份有限公司开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:42:44 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [603219] 品种=外汇、人民币 额度=5,000万元或等值外币；10.00亿元或等值外币 有效期=12个月 管理制度=False
+2026-03-24 14:42:44 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:44 | DEBUG    | util:random_delay:90 - 随机延时 1.10 秒
+2026-03-24 14:42:46 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\卧龙电驱关于开展2026年度套期保值业务的公告_1225022197.pdf
+2026-03-24 14:42:46 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 卧龙电驱关于开展2026年度套期保值业务的公告
+2026-03-24 14:42:46 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600580] 品种=外汇、铜 额度=10,000万元；100,000万元；20,000万元；400,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:46 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:46 | DEBUG    | util:random_delay:90 - 随机延时 1.85 秒
+2026-03-24 14:42:48 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\卧龙电驱关于开展套期保值业务的可行性分析报告_1225022186.pdf
+2026-03-24 14:42:48 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 卧龙电驱关于开展套期保值业务的可行性分析报告
+2026-03-24 14:42:48 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600580] 品种=铜、外汇、美元 额度=10,000万元；100,000万元；20,000万元；400,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:48 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:48 | DEBUG    | util:random_delay:90 - 随机延时 2.12 秒
+2026-03-24 14:42:50 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\卧龙电驱套期保值业务管理制度（2026-03-21）_1225022155.pdf
+2026-03-24 14:42:50 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 卧龙电驱套期保值业务管理制度（2026-03-21）
+2026-03-24 14:42:51 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600580] 品种= 额度= 有效期=12个月 管理制度=True
+2026-03-24 14:42:51 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 卧龙电驱套期保值业务管理制度（2026-03-21）
+2026-03-24 14:42:51 | DEBUG    | util:random_delay:90 - 随机延时 2.38 秒
+2026-03-24 14:42:53 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\外汇套期保值业务管理制度（2026年3月）_1225022100.pdf
+2026-03-24 14:42:53 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 外汇套期保值业务管理制度（2026年3月）
+2026-03-24 14:42:53 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [301158] 品种=外汇、人民币 额度= 有效期= 管理制度=True
+2026-03-24 14:42:53 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 外汇套期保值业务管理制度（2026年3月）
+2026-03-24 14:42:53 | DEBUG    | util:random_delay:90 - 随机延时 2.36 秒
+2026-03-24 14:42:56 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\赤峰黄金关于开展2026年度套期保值业务的公告_1225021892.pdf
+2026-03-24 14:42:56 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 赤峰黄金关于开展2026年度套期保值业务的公告
+2026-03-24 14:42:56 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600988] 品种=外汇、黄金 额度= 有效期=12个月 管理制度=False
+2026-03-24 14:42:56 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:56 | DEBUG    | util:random_delay:90 - 随机延时 2.89 秒
+2026-03-24 14:42:59 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展期货及衍生品套期保值业务的可行性分析报告_1225021558.pdf
+2026-03-24 14:42:59 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展期货及衍生品套期保值业务的可行性分析报告
+2026-03-24 14:42:59 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600388] 品种=碳酸锂、锂、人民币 额度=3,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:42:59 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:42:59 | DEBUG    | util:random_delay:90 - 随机延时 1.95 秒
+2026-03-24 14:43:01 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于公司开展期货及衍生品套期保值业务的公告_1225021541.pdf
+2026-03-24 14:43:01 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于公司开展期货及衍生品套期保值业务的公告
+2026-03-24 14:43:02 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600388] 品种=外汇、碳酸锂、铜、人民币 额度=3,000万元；30,000万元 有效期=2026年3月19日至2027年3月18日 管理制度=False
+2026-03-24 14:43:02 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:02 | DEBUG    | util:random_delay:90 - 随机延时 2.82 秒
+2026-03-24 14:43:05 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于公司及子公司开展外汇套期保值业务的可行性分析报告_1225020759.pdf
+2026-03-24 14:43:05 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于公司及子公司开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:43:05 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [300907] 品种=外汇 额度=3亿元 有效期= 管理制度=False
+2026-03-24 14:43:05 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:05 | DEBUG    | util:random_delay:90 - 随机延时 1.78 秒
+2026-03-24 14:43:07 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于公司及子公司开展外汇套期保值业务的公告_1225020758.pdf
+2026-03-24 14:43:07 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于公司及子公司开展外汇套期保值业务的公告
+2026-03-24 14:43:07 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [300907] 品种=外汇、美元 额度=3亿元 有效期= 管理制度=False
+2026-03-24 14:43:07 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:07 | DEBUG    | util:random_delay:90 - 随机延时 2.10 秒
+2026-03-24 14:43:09 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\超声电子关于开展外汇衍生品套期保值交易的公告_1225020584.pdf
+2026-03-24 14:43:09 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 超声电子关于开展外汇衍生品套期保值交易的公告
+2026-03-24 14:43:10 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [000823] 品种= 额度=60,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:43:10 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:10 | DEBUG    | util:random_delay:90 - 随机延时 1.34 秒
+2026-03-24 14:43:11 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于增加2026年金融衍生品套期保值业务额度的公告_1225020247.pdf
+2026-03-24 14:43:11 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于增加2026年金融衍生品套期保值业务额度的公告
+2026-03-24 14:43:12 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688525] 品种=外汇 额度=0.2亿元；8亿元 有效期=2025年12月24日至2026年12月23日 管理制度=False
+2026-03-24 14:43:12 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:12 | DEBUG    | util:random_delay:90 - 随机延时 1.10 秒
+2026-03-24 14:43:13 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\华泰联合证券有限责任公司关于深圳佰维存储科技股份有限公司增加2026年金融衍生品套期保值业务额度的核_1225020246.pdf
+2026-03-24 14:43:13 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 华泰联合证券有限责任公司关于深圳佰维存储科技股份有限公司增加2026年金融衍生品套期保值业务额度的核查意见
+2026-03-24 14:43:13 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688525] 品种=外汇 额度=0.2亿元；8亿元 有效期= 管理制度=False
+2026-03-24 14:43:13 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:13 | DEBUG    | util:random_delay:90 - 随机延时 1.37 秒
+2026-03-24 14:43:14 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于增加2026年度金融衍生品套期保值业务额度的可行性分析报告_1225020227.pdf
+2026-03-24 14:43:14 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于增加2026年度金融衍生品套期保值业务额度的可行性分析报告
+2026-03-24 14:43:15 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688525] 品种=外汇 额度=0.2亿元；8亿元 有效期= 管理制度=False
+2026-03-24 14:43:15 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:15 | DEBUG    | util:random_delay:90 - 随机延时 2.23 秒
+2026-03-24 14:43:18 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\国泰海通证券股份有限公司关于合肥新汇成微电子股份有限公司开展外汇套期保值交易的核查意见_1225019909.pdf
+2026-03-24 14:43:18 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 国泰海通证券股份有限公司关于合肥新汇成微电子股份有限公司开展外汇套期保值交易的核查意见
+2026-03-24 14:43:18 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688403] 品种=外汇、美元 额度=8,000万美元 有效期= 管理制度=False
+2026-03-24 14:43:18 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:18 | DEBUG    | util:random_delay:90 - 随机延时 2.00 秒
+2026-03-24 14:43:20 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值交易的公告_1225019903.pdf
+2026-03-24 14:43:20 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值交易的公告
+2026-03-24 14:43:20 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688403] 品种=美元、外汇 额度=8,000万美元 有效期= 管理制度=False
+2026-03-24 14:43:20 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:20 | DEBUG    | util:random_delay:90 - 随机延时 1.00 秒
+2026-03-24 14:43:21 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225019753.pdf
+2026-03-24 14:43:21 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:43:21 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688166] 品种=外汇、美元 额度=1.5亿美元 有效期=12个月 管理制度=False
+2026-03-24 14:43:21 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:21 | DEBUG    | util:random_delay:90 - 随机延时 2.17 秒
+2026-03-24 14:43:24 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\期货及衍生品套期保值业务管理制度_1225019583.pdf
+2026-03-24 14:43:24 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 期货及衍生品套期保值业务管理制度
+2026-03-24 14:43:24 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [301256] 品种=外汇 额度= 有效期=10年 管理制度=True
+2026-03-24 14:43:24 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 期货及衍生品套期保值业务管理制度
+2026-03-24 14:43:24 | DEBUG    | util:random_delay:90 - 随机延时 2.20 秒
+2026-03-24 14:43:26 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展期货及衍生品套期保值业务的可行性分析报告_1225019575.pdf
+2026-03-24 14:43:26 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展期货及衍生品套期保值业务的可行性分析报告
+2026-03-24 14:43:27 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [301256] 品种=外汇、美元 额度=1亿美元；650万美元；8.00亿元；3,500万元 有效期=12个月 管理制度=False
+2026-03-24 14:43:27 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:27 | DEBUG    | util:random_delay:90 - 随机延时 2.08 秒
+2026-03-24 14:43:29 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\华泰联合证券有限责任公司关于华融化学股份有限公司开展期货及衍生品套期保值业务的核查意见_1225019574.pdf
+2026-03-24 14:43:29 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 华泰联合证券有限责任公司关于华融化学股份有限公司开展期货及衍生品套期保值业务的核查意见
+2026-03-24 14:43:29 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [301256] 品种=外汇 额度=8.00亿元；3,500万元 有效期=12个月 管理制度=False
+2026-03-24 14:43:29 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:29 | DEBUG    | util:random_delay:90 - 随机延时 1.69 秒
+2026-03-24 14:43:31 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展期货及衍生品套期保值业务的公告_1225019573.pdf
+2026-03-24 14:43:31 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展期货及衍生品套期保值业务的公告
+2026-03-24 14:43:31 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [301256] 品种=外汇、美元 额度=8.00亿元；3,500万元；1亿美元；650万美元 有效期=12个月 管理制度=False
+2026-03-24 14:43:31 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:31 | DEBUG    | util:random_delay:90 - 随机延时 2.43 秒
+2026-03-24 14:43:34 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225019450.pdf
+2026-03-24 14:43:34 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:43:34 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [605155] 品种=外汇 额度=5,000万元；5亿元 有效期=2026年3月19日至2027年3月18日 管理制度=False
+2026-03-24 14:43:34 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:34 | DEBUG    | util:random_delay:90 - 随机延时 1.01 秒
+2026-03-24 14:43:35 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的可行性分析报告_1225019449.pdf
+2026-03-24 14:43:35 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:43:35 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [605155] 品种=外汇 额度=5亿元；3亿元 有效期=12个月 管理制度=False
+2026-03-24 14:43:35 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:35 | DEBUG    | util:random_delay:90 - 随机延时 1.14 秒
+2026-03-24 14:43:37 | INFO     | __main__:save_metadata_to_csv:346 - 元数据已保存到 data\announcements_metadata.csv，新增 30 条记录
+2026-03-24 14:43:37 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:43:37 | DEBUG    | util:random_delay:90 - 随机延时 1.32 秒
+2026-03-24 14:43:38 | INFO     | __main__:crawl_all:465 - 正在处理第 3 页...
+2026-03-24 14:43:38 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 3 页公告列表
+2026-03-24 14:43:38 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 3 页数据，共 30 条公告
+2026-03-24 14:43:38 | INFO     | __main__:crawl_page:384 - 第 3 页发现 19 条新公告
+2026-03-24 14:43:38 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\盛屯矿业集团股份有限公司关于开展2026年外汇套期保值业务的公告_1225019211.pdf
+2026-03-24 14:43:38 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 盛屯矿业集团股份有限公司关于开展2026年外汇套期保值业务的公告
+2026-03-24 14:43:38 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600711] 品种=外汇 额度= 有效期= 管理制度=False
+2026-03-24 14:43:38 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:38 | DEBUG    | util:random_delay:90 - 随机延时 1.68 秒
+2026-03-24 14:43:40 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225018828.pdf
+2026-03-24 14:43:40 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:43:40 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688556] 品种=外汇 额度=5,000万美元或等值外币；250万美元或等值外币 有效期=12个月 管理制度=False
+2026-03-24 14:43:40 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:40 | DEBUG    | util:random_delay:90 - 随机延时 1.04 秒
+2026-03-24 14:43:41 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的可行性分析报告_1225018819.pdf
+2026-03-24 14:43:41 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:43:42 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [688556] 品种=外汇 额度=5,000万美元或等值外币；250万美元或等值外币 有效期=12个月 管理制度=False
+2026-03-24 14:43:42 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:42 | DEBUG    | util:random_delay:90 - 随机延时 1.99 秒
+2026-03-24 14:43:44 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展金融衍生产品套期保值业务的公告_1225018626.pdf
+2026-03-24 14:43:44 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展金融衍生产品套期保值业务的公告
+2026-03-24 14:43:44 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002080] 品种= 额度=10,000万美元 有效期= 管理制度=False
+2026-03-24 14:43:44 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:44 | DEBUG    | util:random_delay:90 - 随机延时 1.11 秒
+2026-03-24 14:43:45 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\中稀有色金属股份有限公司关于开展期货套期保值业务的公告_1225018124.pdf
+2026-03-24 14:43:45 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 中稀有色金属股份有限公司关于开展期货套期保值业务的公告
+2026-03-24 14:43:45 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [600259] 品种=铜、人民币 额度=2,200万元；6,350万元 有效期= 管理制度=False
+2026-03-24 14:43:45 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:45 | DEBUG    | util:random_delay:90 - 随机延时 2.72 秒
+2026-03-24 14:43:48 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\商品期货套期保值业务管理制度的公告_1225020017.pdf
+2026-03-24 14:43:48 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 商品期货套期保值业务管理制度的公告
+2026-03-24 14:43:48 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920981] 品种=黄金 额度= 有效期=12个月 管理制度=True
+2026-03-24 14:43:48 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 商品期货套期保值业务管理制度的公告
+2026-03-24 14:43:48 | DEBUG    | util:random_delay:90 - 随机延时 1.29 秒
+2026-03-24 14:43:50 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇及商品期货套期保值业务的可行性分析报告_1225020006.pdf
+2026-03-24 14:43:50 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇及商品期货套期保值业务的可行性分析报告
+2026-03-24 14:43:50 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920981] 品种=外汇、黄金、美元 额度=750万元；5000万元 有效期=12个月 管理制度=False
+2026-03-24 14:43:50 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:50 | DEBUG    | util:random_delay:90 - 随机延时 1.70 秒
+2026-03-24 14:43:52 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展商品期货套期保值业务的公告_1225020005.pdf
+2026-03-24 14:43:52 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展商品期货套期保值业务的公告
+2026-03-24 14:43:52 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920981] 品种=黄金、外汇 额度=750万元；5000万元 有效期=12个月 管理制度=False
+2026-03-24 14:43:52 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:52 | DEBUG    | util:random_delay:90 - 随机延时 2.24 秒
+2026-03-24 14:43:54 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225020004.pdf
+2026-03-24 14:43:54 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:43:54 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920981] 品种=外汇、美元 额度=750万元；5000万元 有效期= 管理制度=False
+2026-03-24 14:43:54 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:54 | DEBUG    | util:random_delay:90 - 随机延时 1.09 秒
+2026-03-24 14:43:56 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于增加商品套期保值业务保证金额度的公告_1225018089.pdf
+2026-03-24 14:43:56 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于增加商品套期保值业务保证金额度的公告
+2026-03-24 14:43:56 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920662] 品种=锡、铝 额度=1,000万元；3,000万元 有效期= 管理制度=False
+2026-03-24 14:43:56 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:56 | DEBUG    | util:random_delay:90 - 随机延时 1.22 秒
+2026-03-24 14:43:57 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于增加商品套期保值业务保证金额度的可行性分析报告_1225018087.pdf
+2026-03-24 14:43:57 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于增加商品套期保值业务保证金额度的可行性分析报告
+2026-03-24 14:43:57 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920662] 品种=锡、铝 额度=1,000万元；3,000万元 有效期= 管理制度=False
+2026-03-24 14:43:57 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:43:57 | DEBUG    | util:random_delay:90 - 随机延时 2.39 秒
+2026-03-24 14:44:00 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\开展外汇衍生品套期保值业务可行性分析报告_1225016933.pdf
+2026-03-24 14:44:00 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 开展外汇衍生品套期保值业务可行性分析报告
+2026-03-24 14:44:00 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002733] 品种=外汇、美元 额度=2亿美元 有效期=12个月 管理制度=False
+2026-03-24 14:44:00 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:00 | DEBUG    | util:random_delay:90 - 随机延时 1.29 秒
+2026-03-24 14:44:01 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇衍生品套期保值业务的公告_1225016932.pdf
+2026-03-24 14:44:01 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇衍生品套期保值业务的公告
+2026-03-24 14:44:02 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002733] 品种=外汇、美元 额度=2亿美元 有效期=12个月 管理制度=False
+2026-03-24 14:44:02 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:02 | DEBUG    | util:random_delay:90 - 随机延时 1.97 秒
+2026-03-24 14:44:04 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的可行性分析报告_1225016577.pdf
+2026-03-24 14:44:04 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:44:04 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002791] 品种=外汇、人民币、美元 额度=3,600万美元；200万美元或等值币种 有效期= 管理制度=False
+2026-03-24 14:44:04 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:04 | DEBUG    | util:random_delay:90 - 随机延时 2.91 秒
+2026-03-24 14:44:07 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于2026年度开展外汇套期保值业务的公告_1225016576.pdf
+2026-03-24 14:44:07 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于2026年度开展外汇套期保值业务的公告
+2026-03-24 14:44:07 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [002791] 品种=人民币、美元、外汇 额度=3,600万美元；200万美元或等值币种 有效期= 管理制度=False
+2026-03-24 14:44:07 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:07 | DEBUG    | util:random_delay:90 - 随机延时 2.12 秒
+2026-03-24 14:44:10 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\外汇套期保值业务管理制度_1225016477.pdf
+2026-03-24 14:44:10 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 外汇套期保值业务管理制度
+2026-03-24 14:44:10 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920547] 品种=锡、外汇 额度= 有效期= 管理制度=True
+2026-03-24 14:44:10 | INFO     | notifiers.notifier:send_to_wecom:58 - 管理制度类文件，跳过推送: 外汇套期保值业务管理制度
+2026-03-24 14:44:10 | DEBUG    | util:random_delay:90 - 随机延时 2.61 秒
+2026-03-24 14:44:13 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的公告_1225016475.pdf
+2026-03-24 14:44:13 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的公告
+2026-03-24 14:44:13 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920547] 品种=外汇、锡 额度=13,000万元 有效期=12个月 管理制度=False
+2026-03-24 14:44:13 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:13 | DEBUG    | util:random_delay:90 - 随机延时 2.70 秒
+2026-03-24 14:44:16 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\东方证券股份有限公司关于无锡晶海氨基酸股份有限公司开展外汇套期保值业务的核查意见_1225016473.pdf
+2026-03-24 14:44:16 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 东方证券股份有限公司关于无锡晶海氨基酸股份有限公司开展外汇套期保值业务的核查意见
+2026-03-24 14:44:16 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920547] 品种=外汇、人民币 额度=13,000万元 有效期= 管理制度=False
+2026-03-24 14:44:16 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:16 | DEBUG    | util:random_delay:90 - 随机延时 1.07 秒
+2026-03-24 14:44:17 | DEBUG    | __main__:download_pdf:310 - 文件已保存: data\关于开展外汇套期保值业务的可行性分析报告_1225016471.pdf
+2026-03-24 14:44:17 | SUCCESS  | __main__:crawl_page:410 - 下载成功: 关于开展外汇套期保值业务的可行性分析报告
+2026-03-24 14:44:17 | DEBUG    | extractors.extractor:extract_hedge_info:183 - 提取完成 [920547] 品种=外汇、锡 额度=13,000万元 有效期= 管理制度=False
+2026-03-24 14:44:17 | WARNING  | notifiers.notifier:send_to_wecom:63 - 未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL
+2026-03-24 14:44:17 | DEBUG    | util:random_delay:90 - 随机延时 2.48 秒
+2026-03-24 14:44:20 | INFO     | __main__:save_metadata_to_csv:346 - 元数据已保存到 data\announcements_metadata.csv，新增 19 条记录
+2026-03-24 14:44:20 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:44:20 | DEBUG    | util:random_delay:90 - 随机延时 2.40 秒
+2026-03-24 14:44:22 | INFO     | __main__:crawl_all:465 - 正在处理第 4 页...
+2026-03-24 14:44:22 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 4 页公告列表
+2026-03-24 14:44:22 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 4 页数据，共 30 条公告
+2026-03-24 14:44:22 | INFO     | __main__:crawl_page:381 - 第 4 页所有公告都已下载过
+2026-03-24 14:44:22 | DEBUG    | __main__:crawl_all:478 - 第 4 页无新数据，连续空页: 1
+2026-03-24 14:44:22 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:44:22 | DEBUG    | util:random_delay:90 - 随机延时 2.08 秒
+2026-03-24 14:44:24 | INFO     | __main__:crawl_all:465 - 正在处理第 5 页...
+2026-03-24 14:44:24 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 5 页公告列表
+2026-03-24 14:44:24 | DEBUG    | __main__:fetch_announcement_list:150 - 成功获取第 5 页数据，共 9 条公告
+2026-03-24 14:44:24 | INFO     | __main__:crawl_page:381 - 第 5 页所有公告都已下载过
+2026-03-24 14:44:24 | DEBUG    | __main__:crawl_all:478 - 第 5 页无新数据，连续空页: 2
+2026-03-24 14:44:24 | DEBUG    | __main__:crawl_all:488 - 准备爬取下一页，延时 1.0-3.0 秒
+2026-03-24 14:44:24 | DEBUG    | util:random_delay:90 - 随机延时 2.01 秒
+2026-03-24 14:44:26 | INFO     | __main__:crawl_all:465 - 正在处理第 6 页...
+2026-03-24 14:44:26 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 6 页公告列表
+2026-03-24 14:44:26 | WARNING  | util:wrapper:260 - 第 1 次尝试失败: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:44:26 | INFO     | util:wrapper:263 - 2 秒后进行第 2 次重试...
+2026-03-24 14:44:28 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 6 页公告列表
+2026-03-24 14:44:29 | WARNING  | util:wrapper:260 - 第 2 次尝试失败: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:44:29 | INFO     | util:wrapper:263 - 2 秒后进行第 3 次重试...
+2026-03-24 14:44:31 | DEBUG    | __main__:fetch_announcement_list:127 - 请求第 6 页公告列表
+2026-03-24 14:44:31 | WARNING  | util:wrapper:260 - 第 3 次尝试失败: module 'curl_cffi.requests' has no attribute 'RequestException'
+2026-03-24 14:44:31 | ERROR    | util:wrapper:266 - 已达到最大重试次数 3，放弃请求
+2026-03-24 14:44:31 | ERROR    | __main__:main:571 - 程序运行出错: module 'curl_cffi.requests' has no attribute 'RequestException'
