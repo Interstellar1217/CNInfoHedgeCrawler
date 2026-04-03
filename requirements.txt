@@ -15,3 +15,6 @@ loguru==0.7.2
 
 # PDF解析
 pdfplumber==0.11.4
+# FastAPI 服务
+fastapi>=0.109.0
+uvicorn>=0.27.0
