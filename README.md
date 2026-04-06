@@ -103,32 +103,48 @@ python -m notifiers.notifier --batch --send
 
 **用途**: 为 AI Agent 提供套期保值公告搜索能力
 
-```python
-# 在 Dify Agent 中添加工具后，AI 可自动调用
-工具：cninfo_hedge
-参数：
-  - keyword: "套期保值"
-  - start_date: "2025-01-01"
-  - end_date: "2025-12-31"
-  - max_pages: 3
+**部署方式**:
+
+```bash
+# 自托管 Dify
+cp -r dify_plugin/cninfo_hedge /path/to/dify/api/core/plugins/
+docker restart dify-api
+
+# Dify 云服务：打包上传
+cd dify_plugin && zip -r cninfo_hedge.zip cninfo_hedge/
 ```
 
-**部署方式**: 将 `dify_plugin/cninfo_hedge/` 复制到 Dify 插件目录
-
-详细文档：[dify_plugin/README.md](dify_plugin/README.md)
+**工具参数**:
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| keyword | string | 套期保值 | 搜索关键词 |
+| start_date | string | - | 开始日期 YYYY-MM-DD |
+| end_date | string | - | 结束日期 YYYY-MM-DD |
+| max_pages | number | 1 | 最大爬取页数 |
 
 ### Astrbot 插件
 
 **用途**: 在 QQ/微信/Telegram 中通过命令查询公告
 
-```
-/套保查询 外汇套保 2025-01-01 2025-12-31
-/套保 2025-01-01 2025-12-31
+**部署方式**:
+
+```bash
+# 复制插件到 Astrbot 目录
+cp -r astrbot_plugin /path/to/astrbot/plugins/astrbot_plugin_cninfo_hedge
+
+# 安装依赖并重启
+cd /path/to/astrbot/plugins/astrbot_plugin_cninfo_hedge
+pip install -r requirements.txt
 ```
 
-**部署方式**: 将 `astrbot_plugin/` 复制到 Astrbot 插件目录
+**使用命令**:
+```
+/套保查询                          # 默认查询
+/套保查询 外汇套保                  # 指定关键词
+/套保 2025-01-01 2025-12-31        # 按日期范围
+```
 
-详细文档：[astrbot_plugin/README.md](astrbot_plugin/README.md)
+详细文档：[dify_plugin/README.md](dify_plugin/README.md) • [astrbot_plugin/README.md](astrbot_plugin/README.md)
 
 ## 📁 项目结构
 
