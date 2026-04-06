@@ -1,10 +1,10 @@
 # Astrbot Plugin Metadata
 # 文档：https://astrbot.app/dev/plugin.html
 
-name: cninfo_hedge
-desc: 巨潮资讯公告查询插件，支持任意关键词搜索和日期范围过滤
-author: Stanley Wang
-version: "1.1.0"
+name: astrbot_plugin_CNInfoCrawler
+desc: CNInfoHedgeCrawler 是基于巨潮资讯的 A 股上市公司公告爬取工具，支持任意关键词搜索、日期范围过滤、PDF 批量下载和企业微信推送。
+author: Interstellar1217
+version: "1.0.0"
 repo: https://github.com/Interstellar1217/CNInfoHedgeCrawler
 category: 实用工具
 
