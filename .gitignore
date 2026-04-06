@@ -22,11 +22,9 @@ ENV/
 # 数据文件（PDF 体积大，不入库）
 data/*.pdf
 data/*.PDF
+data/*.csv
 
-# 元数据 CSV 可选择性入库，默认忽略
-# data/announcements_metadata.csv
-
-# 日志
+# 日志文件
 logs/
 *.log
 
