@@ -151,8 +151,8 @@ astrbot_plugin/
   "name": "巨潮资讯套期保值公告查询",
   "desc": "从巨潮资讯网查询套期保值相关公告",
   "version": "1.0.0",
-  "author": "Your Name",
-  "repo": "https://github.com/你的用户名/CNInfoHedgeCrawler"
+  "author": "Stanley Wang",
+  "repo": "https://github.com/Interstellar1217/CNInfoHedgeCrawler"
 }
 ```
 
@@ -235,6 +235,6 @@ MIT License - 详见 [主项目 LICENSE](../LICENSE)
 
 **让金融数据查询融入日常聊天，从此信息触手可及！**
 
-[返回主项目](../README.md) • [问题反馈](https://github.com/你的用户名/CNInfoHedgeCrawler/issues)
+[返回主项目](../README.md) • [问题反馈](https://github.com/Interstellar1217/CNInfoHedgeCrawler/issues)
 
 </div>

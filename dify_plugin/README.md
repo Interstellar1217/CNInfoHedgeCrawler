@@ -231,6 +231,6 @@ MIT License - 详见 [主项目 LICENSE](../LICENSE)
 
 **让 AI 获取实时金融公告数据，从此决策更智能！**
 
-[返回主项目](../README.md) • [问题反馈](https://github.com/你的用户名/CNInfoHedgeCrawler/issues)
+[返回主项目](../README.md) • [问题反馈](https://github.com/Interstellar1217/CNInfoHedgeCrawler/issues)
 
 </div>

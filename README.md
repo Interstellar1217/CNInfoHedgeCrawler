@@ -268,6 +268,6 @@ copies or substantial portions of the Software.
 
 **如果这个项目对你有帮助，欢迎 ⭐ Star 支持一下！**
 
-[问题反馈](https://github.com/你的用户名/CNInfoHedgeCrawler/issues) • [功能建议](https://github.com/你的用户名/CNInfoHedgeCrawler/discussions)
+[问题反馈](https://github.com/Interstellar1217/CNInfoHedgeCrawler/issues) • [功能建议](https://github.com/Interstellar1217/CNInfoHedgeCrawler/discussions)
 
 </div>
