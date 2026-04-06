@@ -1,13 +1,16 @@
 {
   "name": "cninfo_hedge",
-  "version": "1.0.1",
-  "description": "巨潮资讯套期保值公告查询插件，支持关键词搜索和日期范围过滤",
+  "version": "1.1.0",
+  "description": "巨潮资讯公告查询插件，支持任意关键词搜索和日期范围过滤",
   "author": "Stanley Wang",
-  "repo": "https://github.com/StanleyWang/CNInfoHedgeCrawler",
+  "repo": "https://github.com/Interstellar1217/CNInfoHedgeCrawler",
+  "category": "实用工具",
   "keyword": [
     "套期保值",
     "公告查询",
-    "巨潮资讯"
+    "巨潮资讯",
+    "业绩预告",
+    "金融"
   ],
   "config": {
     "keyword_default": {

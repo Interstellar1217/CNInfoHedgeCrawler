@@ -146,13 +146,17 @@ astrbot_plugin/
 
 ### plugin.json 说明
 
+实际 `plugin.json` 配置：
+
 ```json
 {
-  "name": "巨潮资讯套期保值公告查询",
-  "desc": "从巨潮资讯网查询套期保值相关公告",
-  "version": "1.0.0",
+  "name": "cninfo_hedge",
+  "version": "1.1.0",
+  "description": "巨潮资讯公告查询插件，支持任意关键词搜索和日期范围过滤",
   "author": "Stanley Wang",
-  "repo": "https://github.com/Interstellar1217/CNInfoHedgeCrawler"
+  "repo": "https://github.com/Interstellar1217/CNInfoHedgeCrawler",
+  "category": "实用工具",
+  "keyword": ["套期保值", "公告查询", "巨潮资讯", "业绩预告", "金融"]
 }
 ```
 
