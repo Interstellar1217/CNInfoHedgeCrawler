@@ -7,9 +7,9 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-**巨潮资讯网套期保值公告自动爬取工具**
+**巨潮资讯网公告自动爬取工具**
 
-从 [巨潮资讯网](https://www.cninfo.com.cn) 自动爬取套期保值相关公告，提取关键信息并推送到企业微信
+支持任意关键词模糊查询，从 [巨潮资讯网](https://www.cninfo.com.cn) 自动爬取公告，提取关键信息并推送到企业微信
 
 [功能特性](#-功能特性) • [快速开始](#-快速开始) • [插件生态](#-插件生态) • [配置说明](#-配置说明) • [开发计划](#-开发计划)
 
@@ -19,13 +19,15 @@
 
 ## 📖 项目简介
 
-CNInfoHedgeCrawler 是一个专业的 A 股上市公司套期保值公告爬取工具，支持：
+CNInfoHedgeCrawler 是一个专业的 A 股上市公司公告爬取工具，支持：
 
-- 🔍 **智能搜索**: 按关键词、日期范围、公告分类精准检索
+- 🔍 **智能搜索**: 支持任意关键词模糊查询，可按日期范围、公告分类精准检索
 - 📥 **批量下载**: 自动翻页，断点续爬，PDF 批量下载
-- 📊 **信息提取**: 从 PDF 自动提取套保品种、额度、有效期、授权机构等关键字段
+- 📊 **信息提取**: 从 PDF 自动提取关键字段（品种、额度、有效期、授权机构等）
 - 📱 **实时推送**: 通过企业微信机器人推送结构化信息卡片
 - 🤖 **AI 集成**: 提供 Dify 和 Astrbot 插件，轻松接入 AI Agent 和聊天机器人
+
+**典型应用场景**：套期保值、业绩预告、ESG 报告、股东大会、收购重组等各类公告爬取。
 
 ## ✨ 功能特性
 
@@ -60,11 +62,14 @@ WECOM_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=你的
 # 默认爬取"套期保值"公告
 python crawler.py
 
+# 自定义关键词（如：业绩预告、ESG、收购等）
+python crawler.py --keyword 业绩
+
 # 按日期范围爬取
-python crawler.py --start-date 2025-01-01 --end-date 2025-12-31
+python crawler.py --keyword 套期保值 --start-date 2025-01-01 --end-date 2025-12-31
 
 # 限制页数 + 自定义关键词
-python crawler.py --keyword 外汇套保 --max-pages 10
+python crawler.py --keyword 股东大会 --max-pages 10
 ```
 
 ### 4. 推送工具
@@ -101,7 +106,7 @@ python -m notifiers.notifier --batch --send
 
 ### Dify 插件
 
-**用途**: 为 AI Agent 提供套期保值公告搜索能力
+**用途**: 为 AI Agent 提供公告搜索能力，支持任意关键词
 
 **部署方式**:
 
@@ -117,7 +122,7 @@ cd dify_plugin && zip -r cninfo_hedge.zip cninfo_hedge/
 **工具参数**:
 | 参数 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| keyword | string | 套期保值 | 搜索关键词 |
+| keyword | string | 套期保值 | 搜索关键词（支持任意词） |
 | start_date | string | - | 开始日期 YYYY-MM-DD |
 | end_date | string | - | 结束日期 YYYY-MM-DD |
 | max_pages | number | 1 | 最大爬取页数 |
