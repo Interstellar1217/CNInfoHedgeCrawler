@@ -2,13 +2,7 @@
 # 文档：https://astrbot.app/dev/plugin.html
 
 name: astrbot_plugin_CNInfoCrawler
-desc: "CNInfoHedgeCrawler 是基于巨潮资讯的 A 股上市公司公告爬取工具，支持：
-
-🔍 智能搜索：支持任意关键词模糊查询，可按日期范围、公告分类精准检索
-📥 批量下载：自动翻页，断点续爬，PDF 批量下载
-📊 信息提取：从 PDF 自动提取关键字段（品种、额度、有效期、授权机构等）
-📱 实时推送：通过企业微信机器人 Webhook 推送结构化信息卡片
-📚 应用场景：套期保值、业绩预告、ESG 报告、股东大会、收购重组等各类公告爬取。"
+desc: CNInfoHedgeCrawler 是基于巨潮资讯的 A 股上市公司公告爬取工具，支持任意关键词搜索、日期范围过滤、PDF 批量下载和企业微信推送。
 author: Interstellar1217
 version: "1.1.0"
 repo: https://github.com/Interstellar1217/CNInfoHedgeCrawler

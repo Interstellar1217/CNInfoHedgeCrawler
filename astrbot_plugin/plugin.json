@@ -1,8 +1,8 @@
 {
-  "name": "cninfo_hedge",
+  "name": "astrbot_plugin_CNInfoCrawler",
   "version": "1.1.0",
-  "description": "巨潮资讯公告查询插件，支持任意关键词搜索和日期范围过滤",
-  "author": "Stanley Wang",
+  "description": "CNInfoHedgeCrawler 是基于巨潮资讯的 A 股上市公司公告爬取工具，支持任意关键词搜索、日期范围过滤、PDF 批量下载和企业微信推送。",
+  "author": "Interstellar1217",
   "repo": "https://github.com/Interstellar1217/CNInfoHedgeCrawler",
   "category": "实用工具",
   "keyword": [
