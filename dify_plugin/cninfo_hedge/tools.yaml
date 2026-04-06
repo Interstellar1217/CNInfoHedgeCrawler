@@ -7,8 +7,8 @@ identity:
     en_US: CNInfo Hedge Announcement
   description:
     zh_Hans: 从巨潮资讯网爬取套期保值相关公告，提取关键信息（品种、额度、有效期、目的等）
-    en_US: Crawl hedge announcement announcements from CNInfo and extract key information
+    en_US: Crawl hedge announcements from CNInfo and extract key information (variety, quota, period, purpose)
   icon: icon.svg
-  version: 0.0.1
+  version: 0.0.2
 tools:
   - search_announcements

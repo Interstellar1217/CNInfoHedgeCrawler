@@ -16,6 +16,9 @@ ENV/
 .vscode/
 *.iml
 
+# Claude Code 本地配置
+.claude/
+
 # 数据文件（PDF 体积大，不入库）
 data/*.pdf
 data/*.PDF
