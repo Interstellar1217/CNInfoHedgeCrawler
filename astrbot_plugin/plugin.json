@@ -1,0 +1,22 @@
+{
+  "name": "cninfo_hedge",
+  "version": "0.0.1",
+  "description": "巨潮资讯套期保值公告查询插件",
+  "author": "Stanley Wang",
+  "repo": "https://github.com/yourusername/CNInfoHedgeCrawler",
+  "keyword": [
+    "套期保值",
+    "公告查询",
+    "巨潮资讯"
+  ],
+  "config": {
+    "keyword_default": {
+        "value": "套期保值",
+        "description": "默认搜索关键词"
+    },
+    "max_pages_default": {
+        "value": 1,
+        "description": "默认最大爬取页数"
+    }
+  }
+}

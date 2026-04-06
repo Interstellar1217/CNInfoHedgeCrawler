@@ -1,0 +1,14 @@
+namespace: cninfo
+identity:
+  name: cninfo_hedge
+  author: Stanley Wang
+  label:
+    zh_Hans: 巨潮资讯套期保值公告
+    en_US: CNInfo Hedge Announcement
+  description:
+    zh_Hans: 从巨潮资讯网爬取套期保值相关公告，提取关键信息（品种、额度、有效期、目的等）
+    en_US: Crawl hedge announcement announcements from CNInfo and extract key information
+  icon: icon.svg
+  version: 0.0.1
+tools:
+  - search_announcements
