@@ -9,16 +9,28 @@
 https://developer.work.weixin.qq.com/document/path/91770
 """
 
+import asyncio
 from pathlib import Path
+from typing import Optional
 
 from curl_cffi import requests
-from loguru import logger
+from astrbot.api import logger
 
 from config import config
 
 
+def _run_in_thread(func, *args, **kwargs):
+    """在线程池中运行同步函数，避免阻塞事件循环"""
+    return asyncio.run(asyncio.to_thread(func, *args, **kwargs))
+
+
 def _build_markdown(info: dict) -> str:
-    sec = f"{info['sec_name']}（{info['sec_code']}）" if info.get('sec_code') else info.get('sec_name', '')
+    """构建 Markdown 卡片内容"""
+    # 安全获取字段，避免 KeyError
+    sec_name = info.get('sec_name', '')
+    sec_code = info.get('sec_code', '')
+    sec = f"{sec_name}({sec_code})" if sec_name else ''
+
     date = info.get("publish_date", "")
 
     lines = [
@@ -55,7 +67,7 @@ def _build_markdown(info: dict) -> str:
 def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
     """推送单条公告到企业微信"""
     if info.get("is_policy"):
-        logger.info(f"管理制度类文件，跳过推送: {info.get('title', '')}")
+        logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
         return False
 
     url = webhook_url or config.WECOM_WEBHOOK_URL
@@ -66,19 +78,20 @@ def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
     payload = {"msgtype": "markdown", "markdown": {"content": _build_markdown(info)}}
 
     try:
-        resp = requests.post(url, json=payload, timeout=10)
+        resp = _run_in_thread(requests.post, url, json=payload, timeout=10)
         result = resp.json()
         if result.get("errcode") == 0:
-            logger.info(f"推送成功: {info.get('sec_name')} - {info.get('title', '')[:30]}")
+            logger.info(f"推送成功：{info.get('sec_name')} - {info.get('title', '')[:30]}")
             return True
-        logger.error(f"推送失败: {result}")
+        logger.error(f"推送失败：{result}")
         return False
     except Exception as e:
-        logger.error(f"推送异常: {e}")
+        logger.error(f"推送异常：{e}")
         return False
 
 
 def preview_markdown(info: dict) -> None:
+    """预览 Markdown 内容"""
     print("\n" + "=" * 60)
     print("【推送预览】")
     print("=" * 60)
@@ -86,17 +99,17 @@ def preview_markdown(info: dict) -> None:
     print("=" * 60 + "\n")
 
 
-def load_metadata(csv_path: Path = None) -> "pd.DataFrame | None":
+def load_metadata(csv_path: Path = None) -> Optional["pd.DataFrame"]:
     """加载 announcements_metadata.csv，返回 DataFrame，失败返回 None"""
     try:
         import pandas as pd
-        p = csv_path or Path(config.DATA_DIR) / config.METADATA_FILE
+        p = csv_path or config.get_data_dir() / config.METADATA_FILE
         if not p.exists():
-            logger.warning(f"元数据文件不存在: {p}")
+            logger.warning(f"元数据文件不存在：{p}")
             return None
         return pd.read_csv(p, encoding="utf-8-sig", dtype={"announcementId": str, "secCode": str})
     except Exception as e:
-        logger.error(f"加载元数据失败: {e}")
+        logger.error(f"加载元数据失败：{e}")
         return None
 
 
@@ -117,12 +130,12 @@ def lookup_announcement(ann_id: str, df: "pd.DataFrame") -> dict:
     }
 
 
-def pdf_path_from_metadata(row: dict, data_dir: Path = None) -> Path | None:
+def pdf_path_from_metadata(row: dict, data_dir: Path = None) -> Optional[Path]:
     """
     根据元数据推断本地 PDF 路径。
     文件名格式：{title}_{announcementId}.pdf（与 crawler.py generate_filename 一致）
     """
-    data_dir = data_dir or Path(config.DATA_DIR)
+    data_dir = data_dir or config.get_data_dir()
     ann_id = row.get("announcementId", "")
     # 直接按 announcementId 后缀匹配，兼容各种标题
     matches = list(data_dir.glob(f"*_{ann_id}.pdf")) + list(data_dir.glob(f"*_{ann_id}.PDF"))
@@ -150,7 +163,6 @@ if __name__ == "__main__":
     """
     import argparse
     import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent))
 
     from extractors.extractor import extract_hedge_info
 
@@ -168,7 +180,7 @@ if __name__ == "__main__":
 
     def _process(pdf_path: Path, announcement: dict):
         if not pdf_path.exists():
-            print(f"[跳过] 文件不存在: {pdf_path}")
+            print(f"[跳过] 文件不存在：{pdf_path}")
             return
         # 补全 org_id 供详情页链接使用
         info = extract_hedge_info(pdf_path, announcement)
@@ -180,7 +192,7 @@ if __name__ == "__main__":
         else:
             print("（仅预览，未推送。加 --send 参数可推送）")
 
-    # ── 模式1：指定文件路径 ──────────────────────────────────────────────────
+    # ── 模式 1：指定文件路径 ──────────────────────────────────────────────────
     if args.pdf:
         pdf_path = Path(args.pdf)
         stem = pdf_path.stem
@@ -198,7 +210,7 @@ if __name__ == "__main__":
             }
         _process(pdf_path, announcement)
 
-    # ── 模式2：指定公告 ID ───────────────────────────────────────────────────
+    # ── 模式 2：指定公告 ID ───────────────────────────────────────────────────
     elif args.ann_id:
         if df is None:
             print("无法加载元数据 CSV，请检查 data/announcements_metadata.csv")
@@ -213,7 +225,7 @@ if __name__ == "__main__":
             sys.exit(1)
         _process(pdf_path, announcement)
 
-    # ── 模式3：批量处理 ──────────────────────────────────────────────────────
+    # ── 模式 3：批量处理 ──────────────────────────────────────────────────────
     elif args.batch:
         if df is None:
             print("无法加载元数据 CSV")

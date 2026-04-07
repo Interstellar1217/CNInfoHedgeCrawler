@@ -10,21 +10,29 @@ Dify 插件 - 巨潮资讯套期保值公告爬虫工具
 3. AI 可以自动调用此工具搜索套期保值公告
 """
 
+import asyncio
 import json
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 
 from curl_cffi import requests
 from curl_cffi.requests import Session
-from loguru import logger
 
-# 导入项目配置和工具
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from astrbot.api import logger
 
-from config import config as project_config
+# 导入项目配置（使用绝对路径）
+PLUGIN_ROOT = Path(__file__).parent.parent.parent
+CONFIG_PATH = PLUGIN_ROOT / "config.py"
+
+# 动态导入 config 模块
+import importlib.util
+spec = importlib.util.spec_from_file_location("config", CONFIG_PATH)
+config_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(config_module)
+project_config = config_module.config
 
 
 class CNInfoHedgeTool:
@@ -33,8 +41,30 @@ class CNInfoHedgeTool:
     """
 
     def __init__(self):
+        self.session: Optional[Session] = None
+        self._executor: Optional[ThreadPoolExecutor] = None
+
+    def initialize(self) -> None:
+        """初始化 Session 和线程池"""
         self.session = Session(impersonate="chrome136")
         self.session.headers.update(project_config.HEADERS)
+        self._executor = ThreadPoolExecutor(max_workers=2)
+
+    def shutdown(self) -> None:
+        """关闭 Session 和线程池，释放资源"""
+        if self.session is not None:
+            self.session.close()
+            self.session = None
+        if self._executor is not None:
+            self._executor.shutdown(wait=False)
+            self._executor = None
+
+    def _run_in_executor(self, func, *args, **kwargs):
+        """在线程池中运行同步函数，避免阻塞"""
+        if self._executor is None:
+            self.initialize()
+        future = self._executor.submit(func, *args, **kwargs)
+        return future.result()
 
     def search_announcements(
         self,
@@ -50,18 +80,36 @@ class CNInfoHedgeTool:
             keyword: 搜索关键词
             start_date: 开始日期 YYYY-MM-DD
             end_date: 结束日期 YYYY-MM-DD
-            max_pages: 最大爬取页数
+            max_pages: 最大爬取页数（1-10，防止过度请求）
 
         Returns:
             包含公告列表的字典
         """
+        # 参数边界校验
+        try:
+            max_pages = int(max_pages)
+        except (ValueError, TypeError):
+            return {
+                "success": False,
+                "total": 0,
+                "announcements": [],
+                "error": "max_pages 必须是整数"
+            }
+
+        # 限制 max_pages 范围，防止过度请求
+        if max_pages < 1:
+            max_pages = 1
+        elif max_pages > 10:
+            logger.warning(f"max_pages={max_pages} 过大，限制为 10")
+            max_pages = 10
+
         try:
             announcements = []
 
             for page_num in range(1, max_pages + 1):
                 logger.info(f"正在爬取第 {page_num} 页，关键词：{keyword}")
 
-                # 获取公告列表
+                # 获取公告列表（在线程池中运行）
                 data = self._fetch_announcement_list(
                     keyword=keyword,
                     page_num=page_num,
@@ -103,6 +151,9 @@ class CNInfoHedgeTool:
                 "announcements": [],
                 "error": str(e)
             }
+        finally:
+            # 使用后关闭 Session
+            self.shutdown()
 
     def _fetch_announcement_list(
         self,
@@ -143,8 +194,11 @@ class CNInfoHedgeTool:
 
             return data
 
-        except Exception as e:
+        except requests.RequestException as e:
             logger.error(f"请求失败：{e}")
+            return None
+        except Exception as e:
+            logger.error(f"未知错误：{e}")
             return None
 
     def _parse_announcements(self, data: Dict) -> List[Dict]:
@@ -191,6 +245,19 @@ class CNInfoHedgeTool:
         return f"{project_config.PDF_DOWNLOAD_URL}?announcementId={announcement_id}&flag=pdf"
 
 
+# 全局工具实例（用于状态保持）
+_tool_instance: Optional[CNInfoHedgeTool] = None
+
+
+def _get_tool() -> CNInfoHedgeTool:
+    """获取或创建工具实例"""
+    global _tool_instance
+    if _tool_instance is None:
+        _tool_instance = CNInfoHedgeTool()
+        _tool_instance.initialize()
+    return _tool_instance
+
+
 # Dify 入口函数
 def invoke(tool_name: str, credentials: Dict, tool_parameters: Dict) -> Dict:
     """
@@ -206,14 +273,14 @@ def invoke(tool_name: str, credentials: Dict, tool_parameters: Dict) -> Dict:
     """
     logger.info(f"Dify 调用工具：{tool_name}, 参数：{tool_parameters}")
 
-    tool = CNInfoHedgeTool()
+    tool = _get_tool()
 
     if tool_name == "search_announcements":
         return tool.search_announcements(
             keyword=tool_parameters.get("keyword", "套期保值"),
             start_date=tool_parameters.get("start_date"),
             end_date=tool_parameters.get("end_date"),
-            max_pages=int(tool_parameters.get("max_pages", 1))
+            max_pages=tool_parameters.get("max_pages", 1)
         )
     else:
         return {
@@ -243,3 +310,7 @@ if __name__ == "__main__":
     print("测试结果:")
     print(json.dumps(result, ensure_ascii=False, indent=2))
     print("=" * 60)
+
+    # 清理资源
+    if _tool_instance is not None:
+        _tool_instance.shutdown()

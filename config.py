@@ -8,33 +8,34 @@
 """
 
 import random
+from pathlib import Path
 from typing import Dict, List, Optional
 
 
 class Config:
     """项目配置类"""
 
-    # 基础URL配置
+    # 基础 URL 配置
     BASE_URL = "https://www.cninfo.com.cn"
-    STATIC_URL = "https://static.cninfo.com.cn"  # PDF文件实际托管域名
+    STATIC_URL = "https://static.cninfo.com.cn"  # PDF 文件实际托管域名
     SEARCH_URL = f"{BASE_URL}/new/commonUrl/pageOfSearch"
 
     # 搜索参数
     DEFAULT_KEYWORD = "套期保值"
     PAGE_SIZE = 30  # 每页公告数量
 
-    # 完整的搜索URL示例
+    # 完整的搜索 URL 示例
     SEARCH_URL_TEMPLATE = (
         f"{SEARCH_URL}?url=disclosure/list/search&keywords={{keyword}}"
     )
 
-    # 公告列表API（通过分析实际请求获得）
+    # 公告列表 API（通过分析实际请求获得）
     LIST_API = f"{BASE_URL}/new/hisAnnouncement/query"
 
     # 公告详情页模板
     ANNOUNCEMENT_DETAIL_URL = f"{BASE_URL}/new/disclosure/detail?announcementId={{announcement_id}}"
 
-    # PDF下载模板
+    # PDF 下载模板
     PDF_DOWNLOAD_URL = f"{BASE_URL}/new/pdfDownLoad"
 
     # 请求头配置（与浏览器实际请求保持一致）
@@ -55,10 +56,39 @@ class Config:
     MAX_RETRIES = 3
     RETRY_DELAY = 2  # 重试前等待秒数
 
-    # 数据存储配置
-    DATA_DIR = "data"
-    LOGS_DIR = "logs"
+    # 数据存储配置（占位符，实际使用时通过 StarTools.get_data_dir() 获取）
+    # 注意：在 AstrBot 插件中应使用 StarTools.get_data_dir() 获取规范数据目录
+    DATA_DIR: Optional[Path] = None
+    LOGS_DIR: Optional[Path] = None
+
+    @classmethod
+    def set_data_dir(cls, dir_path: Path) -> None:
+        """设置数据目录（AstrBot 插件模式下调用）"""
+        cls.DATA_DIR = dir_path
+
+    @classmethod
+    def set_logs_dir(cls, dir_path: Path) -> None:
+        """设置日志目录（AstrBot 插件模式下调用）"""
+        cls.LOGS_DIR = dir_path
+
+    # 独立插件模式下使用默认相对路径
+    _default_data_dir = Path("data")
+    _default_logs_dir = Path("logs")
     METADATA_FILE = "announcements_metadata.csv"
+
+    @classmethod
+    def get_data_dir(cls) -> Path:
+        """获取数据目录（兼容独立运行和插件模式）"""
+        if cls.DATA_DIR is not None:
+            return cls.DATA_DIR
+        return cls._default_data_dir
+
+    @classmethod
+    def get_logs_dir(cls) -> Path:
+        """获取日志目录（兼容独立运行和插件模式）"""
+        if cls.LOGS_DIR is not None:
+            return cls.LOGS_DIR
+        return cls._default_logs_dir
 
     # 搜索过滤条件
     # 公告分类代码（根据巨潮资讯实际分类）
@@ -87,7 +117,7 @@ class Config:
 
     # 企业微信机器人配置
     # 在企业微信群中添加机器人后，将 Webhook URL 填入此处
-    WECOM_WEBHOOK_URL = ""  # 例如: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx
+    WECOM_WEBHOOK_URL = ""
 
     @classmethod
     def get_random_delay(cls) -> float:
@@ -101,7 +131,7 @@ class Config:
     def get_search_params(cls,
                           keyword: str = DEFAULT_KEYWORD,
                           page_num: int = 1,
-                          page_size: int = None,
+                          page_size: Optional[int] = None,
                           category: str = None,
                           stock_market: str = None,
                           start_date: str = None,
@@ -109,7 +139,7 @@ class Config:
         """
         构造搜索请求参数
 
-        需求：生成巨潮资讯公告搜索API所需的参数
+        需求：生成巨潮资讯公告搜索 API 所需的参数
         实现思路：根据实际抓包分析得出的参数结构
 
         Args:

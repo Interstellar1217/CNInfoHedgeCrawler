@@ -15,9 +15,10 @@ PDF 数据提取模块
 
 import re
 from pathlib import Path
+from typing import List
 
 import pdfplumber
-from loguru import logger
+from astrbot.api import logger
 
 
 # ── 文本标准化 ────────────────────────────────────────────────────────────────
@@ -35,53 +36,53 @@ def _normalize(text: str) -> str:
 
 # 套保品种关键词列表（可按需扩展）
 _VARIETY_KEYWORDS = (
-    '外汇|美元|欧元|港元|港币|日元|英镑|人民币|'
-    '铜|铝|锌|镍|铅|锡|黄金|白银|原油|天然气|橡胶|'
+    '外汇 | 美元|欧元|港元|港币|日元|英镑|人民币|'
+    '铜 | 铝|锌|镍|铅|锡|黄金|白银|原油|天然气|橡胶|'
     '大豆|玉米|小麦|棉花|铁矿石|螺纹钢|热轧卷板|'
     'PTA|甲醇|乙二醇|聚乙烯|聚丙烯|碳酸锂|氢氧化锂|锂'
 )
 
 _RE_VARIETY = re.compile(
-    r'(?:套期保值|套保|对冲).{0,30}?(' + _VARIETY_KEYWORDS + r')',
+    r'(?:套期保值 | 套保 | 对冲).{0,30}?(' + _VARIETY_KEYWORDS + r')',
     re.IGNORECASE,
 )
 
-# 额度：触发词 → 0~15字 → 数字（含千分位逗号）→ 单位
+# 额度：触发词 → 0~15 字 → 数字（含千分位逗号）→ 单位
 # 单位：万/亿（可选）+ 货币词
-_CURRENCY = r'(?:亿|万)?(?:美元|欧元|港元|港币|日元|英镑|人民币|元|USD|EUR|HKD|JPY|GBP|CNY)'
+_CURRENCY = r'(?:亿 | 万)?(?:美元|欧元|港元|港币|日元|英镑|人民币|元|USD|EUR|HKD|JPY|GBP|CNY)'
 _RE_QUOTA = re.compile(
-    r'(?:不超过|上限|额度|合约价值|保证金|权利金).{0,15}?'
-    r'((?<!\d)\d[\d,.]*' + _CURRENCY + r'(?:或等值[^（(，。；]{0,8})?)',
+    r'(?:不超过 | 上限|额度|合约价值|保证金|权利金).{0,15}?'
+    r'((?<!\d)\d[\d,.]*' + _CURRENCY + r'(?:或等值 [^（(，。；]{0,8})?)',
     re.IGNORECASE,
 )
 
-# 有效期：触发词 → 绝对区间 或 相对 N个月/N年
+# 有效期：触发词 → 绝对区间 或 相对 N 个月/N 年
 _RE_PERIOD = re.compile(
-    r'(?:有效期|授权期限|期限|额度有效期).{0,20}?'
+    r'(?:有效期 | 授权期限|期限|额度有效期).{0,20}?'
     r'('
-    r'\d{4}年\d{1,2}月\d{1,2}日(?:至|到|—|-)\d{4}年\d{1,2}月\d{1,2}日'   # 绝对区间
-    r'|\d{4}[-/]\d{1,2}[-/]\d{1,2}(?:至|到|—|-)\d{4}[-/]\d{1,2}[-/]\d{1,2}'
-    r'|(?<!\d)\d{1,3}(?!\d)个月'                                            # N个月
-    r'|(?<!\d)\d{1,2}(?!\d)年'                                              # N年
+    r'\d{4}年\d{1,2}月\d{1,2}日(?:至 | 到|—|-)\d{4}年\d{1,2}月\d{1,2}日'   # 绝对区间
+    r'|\d{4}[-/]\d{1,2}[-/]\d{1,2}(?:至 | 到|—|-)\d{4}[-/]\d{1,2}[-/]\d{1,2}'
+    r'|(?<!\d)\d{1,3}(?!\d) 个月'                                            # N 个月
+    r'|(?<!\d)\d{1,2}(?!\d) 年'                                              # N 年
     r')',
     re.IGNORECASE,
 )
 
 # 套保目的（宽松匹配，取"规避/锁定/降低/对冲…风险/成本"短语）
 _RE_PURPOSE = re.compile(
-    r'(?:目的|为了|旨在|以).{0,5}?'
-    r'(规避.{0,20}?风险|锁定.{0,20}?成本|降低.{0,20}?风险|对冲.{0,20}?风险|防范.{0,20}?风险)',
+    r'(?:目的 | 为了|旨在|以).{0,5}?'
+    r'(规避.{0,20}?风险 | 锁定.{0,20}?成本 | 降低.{0,20}?风险 | 对冲.{0,20}?风险 | 防范.{0,20}?风险)',
     re.IGNORECASE,
 )
 
 # 证券简称（第一页页眉行）
-_RE_SEC_SHORT = re.compile(r'证券简称[：:]\s*([^\s　]+)')
+_RE_SEC_SHORT = re.compile(r'证券简称 [：:]\s*([^\s ]+)')
 
-# 公司全称（"XX股份有限公司" / "XX有限公司"）
-_RE_SEC_FULL = re.compile(r'([\u4e00-\u9fff（()）\w]{4,30}(?:股份有限公司|有限公司|集团股份有限公司))')
+# 公司全称（"XX 股份有限公司" / "XX 有限公司"）
+_RE_SEC_FULL = re.compile(r'([\u4e00-\u9fff（()）\w]{4,30}(?:股份有限公司 | 有限公司|集团股份有限公司))')
 
 # 授权机构
-_RE_AUTHORITY = re.compile(r'(董事会|股东大会|股东会)(?:授权|批准|同意|审议通过)')
+_RE_AUTHORITY = re.compile(r'(董事会 | 股东大会 | 股东会)(?:授权 | 批准 | 同意 | 审议通过)')
 
 
 # ── 辅助函数 ──────────────────────────────────────────────────────────────────
@@ -91,10 +92,10 @@ def _first_match(pattern: re.Pattern, text: str) -> str:
     return m.group(1).strip() if m else ""
 
 
-def _all_matches(pattern: re.Pattern, text: str) -> list[str]:
+def _all_matches(pattern: re.Pattern, text: str) -> List[str]:
     """去重：相同数值的额度只保留第一次出现，过滤数字部分为零的噪声"""
     seen_vals: dict[str, bool] = {}   # 按规范化数值去重（如 "5000" 只保留一条）
-    result: list[str] = []
+    result: List[str] = []
     for m in pattern.finditer(text):
         val = m.group(1).strip()
         digits = re.sub(r'[^\d]', '', val[:10])
@@ -121,7 +122,7 @@ def extract_text_from_pdf(pdf_path: Path) -> str:
                     parts.append(t)
         return "\n".join(parts)
     except Exception as e:
-        logger.warning(f"PDF文本提取失败 [{pdf_path.name}]: {e}")
+        logger.warning(f"PDF 文本提取失败 [{pdf_path.name}]: {e}")
         return ""
 
 
@@ -154,13 +155,13 @@ def extract_hedge_info(pdf_path: Path, announcement: dict) -> dict:
             if m:
                 sec_name = m.group(1).strip()
     if not sec_code:
-        m = re.search(r'证券代码[：:]\s*(\d+)', raw_text)
+        m = re.search(r'证券代码 [：:]\s*(\d+)', raw_text)
         if m:
             sec_code = m.group(1).strip()
 
     # 公告类型判断：标题含"管理制度"才视为制度文件，跳过推送
     title = announcement.get("title", "") or pdf_path.stem
-    is_policy = bool(re.search(r'管理制度|内部控制制度|风险管理制度', title))
+    is_policy = bool(re.search(r'管理制度 | 内部控制制度 | 风险管理制度', title))
 
     varieties = _all_matches(_RE_VARIETY, text)
     quotas = _all_matches(_RE_QUOTA, text)
@@ -171,7 +172,7 @@ def extract_hedge_info(pdf_path: Path, announcement: dict) -> dict:
         "sec_name": sec_name,
         "title": announcement.get("title", ""),
         "publish_date": _format_date(announcement.get("publishTime", "")),
-        "varieties": "、".join(varieties) if varieties else "",
+        "varieties": ",".join(varieties) if varieties else "",
         "quota": "；".join(quotas) if quotas else "",
         "period": _first_match(_RE_PERIOD, text),
         "purpose": _first_match(_RE_PURPOSE, text),
@@ -189,11 +190,16 @@ def extract_hedge_info(pdf_path: Path, announcement: dict) -> dict:
 
 
 def _format_date(publish_time) -> str:
-    """毫秒时间戳或字符串 → YYYY-MM-DD"""
+    """
+    毫秒时间戳或字符串 → YYYY-MM-DD
+
+    注意：使用本地时区而非 UTC，避免日期出现偏差
+    """
     if not publish_time:
         return ""
     try:
-        from datetime import datetime, timezone
-        return datetime.fromtimestamp(int(publish_time) / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
-    except (ValueError, TypeError):
+        from datetime import datetime
+        # 使用本地时区而非 UTC，避免跨日问题
+        return datetime.fromtimestamp(int(publish_time) / 1000).strftime("%Y-%m-%d")
+    except (ValueError, TypeError, OSError):
         return str(publish_time)[:10]
