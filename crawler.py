@@ -30,7 +30,6 @@ from bs4 import BeautifulSoup
 
 from config import config
 from util import (
-    setup_logger,
     ensure_directories,
     random_delay,
     random_delay_async,
@@ -45,6 +44,9 @@ from notifiers.notifier import send_to_wecom
 class CNInfoHedgeCrawler:
     """
     巨潮资讯套期保值公告爬虫
+
+    注意：本模块设计为独立运行脚本，不支持在异步环境中直接调用。
+    如需在异步环境中使用，请通过 subprocess 或单独线程运行。
     """
 
     def __init__(self, keyword: str = None):
@@ -71,9 +73,6 @@ class CNInfoHedgeCrawler:
 
     def _setup(self) -> None:
         """初始化设置"""
-        # 配置日志
-        setup_logger()
-
         # 创建必要目录
         ensure_directories()
 
@@ -96,7 +95,25 @@ class CNInfoHedgeCrawler:
             self._executor = None
 
     def _run_in_executor(self, func, *args, **kwargs):
-        """在线程池中运行同步函数，避免阻塞事件循环"""
+        """
+        在线程池中运行同步函数。
+
+        注意：此方法使用同步等待（future.result()），仅适用于独立脚本模式。
+        在独立脚本模式下运行（如 python crawler.py），事件循环尚未启动，因此同步等待是安全的。
+        切勿在异步环境中直接调用此方法。
+        """
+        # 运行时检测：如果在异步环境中被调用，抛出明确的错误
+        try:
+            asyncio.get_running_loop()
+            raise RuntimeError(
+                "CNInfoHedgeCrawler 是同步爬虫，不能在异步环境中直接调用。"
+                "请使用 asyncio.to_thread() 或在单独进程中运行。"
+            )
+        except RuntimeError as e:
+            # 如果没有运行中的事件循环，这是预期的行为
+            if "no running event loop" not in str(e):
+                raise
+
         if self.session is None:
             self.initialize()
         future = self._executor.submit(func, *args, **kwargs)

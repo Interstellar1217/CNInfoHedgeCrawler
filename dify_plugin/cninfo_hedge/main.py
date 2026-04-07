@@ -60,7 +60,23 @@ class CNInfoHedgeTool:
             self._executor = None
 
     def _run_in_executor(self, func, *args, **kwargs):
-        """在线程池中运行同步函数，避免阻塞"""
+        """
+        在线程池中运行同步函数。
+
+        注意：此方法使用同步等待（future.result()），仅适用于同步环境。
+        """
+        # 运行时检测：如果在异步环境中被调用，抛出明确的错误
+        try:
+            asyncio.get_running_loop()
+            raise RuntimeError(
+                "CNInfoHedgeTool 是同步工具，不能在异步环境中直接调用。"
+                "请使用 asyncio.to_thread() 或在单独进程中运行。"
+            )
+        except RuntimeError as e:
+            # 如果没有运行中的事件循环，这是预期的行为
+            if "no running event loop" not in str(e):
+                raise
+
         if self._executor is None:
             self.initialize()
         future = self._executor.submit(func, *args, **kwargs)
@@ -291,9 +307,6 @@ def invoke(tool_name: str, credentials: Dict, tool_parameters: Dict) -> Dict:
 
 # 本地测试
 if __name__ == "__main__":
-    # 配置日志
-    logger.add("dify_plugin.log", rotation="500 MB", retention="7 days")
-
     # 测试搜索
     result = invoke(
         tool_name="search_announcements",

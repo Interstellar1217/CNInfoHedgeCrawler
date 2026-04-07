@@ -4,6 +4,7 @@
 """AstrBot 插件 - 巨潮资讯套期保值公告查询。"""
 
 import asyncio
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -13,7 +14,6 @@ from curl_cffi.requests import Session
 from astrbot.api import logger
 from astrbot.api.event import AstrMessageEvent, MessageChain, filter
 from astrbot.api.star import Context, Star, register
-from astrbot.api.provider import ProviderCommand
 
 # 导入项目配置（使用绝对路径）
 PLUGIN_ROOT = Path(__file__).parent.parent
@@ -94,10 +94,8 @@ class CNInfoHedgePlugin(Star):
                 if not data:
                     break
                 announcements.extend(self._parse_announcements(data))
-                asyncio.run_coroutine_threadsafe(
-                    asyncio.sleep(project_config.get_random_delay()),
-                    asyncio.get_event_loop()
-                )
+                # 在线程池中直接使用 time.sleep，确保延时生效
+                time.sleep(project_config.get_random_delay())
             for ann in announcements:
                 ann["pdfUrl"] = self._generate_pdf_url(ann["announcementId"], ann.get("adjunctUrl"))
             return {"success": True, "total": len(announcements), "announcements": announcements}

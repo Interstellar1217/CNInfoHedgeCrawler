@@ -3,8 +3,10 @@
 
 """
 工具函数模块
-需求：提供通用的辅助功能，如文件处理、日志配置、延时控制等
+需求：提供通用的辅助功能，如文件处理、延时控制等
 实现思路：将常用功能封装成独立函数，便于复用
+
+注意：本模块不提供日志配置功能，所有日志直接使用 astrbot.api.logger
 """
 
 import os
@@ -20,47 +22,6 @@ from urllib.parse import urlparse, parse_qs
 from curl_cffi import requests
 from astrbot.api import logger
 from config import config
-
-
-def setup_logger(log_file: str = "crawler.log") -> None:
-    """
-    配置日志记录器
-
-    需求：统一管理日志输出，同时输出到文件和终端
-    实现思路：使用 loguru，配置文件和控制台两种输出方式
-
-    Args:
-        log_file: 日志文件名
-    """
-    # 确保日志目录存在
-    log_dir = config.get_logs_dir()
-    log_dir.mkdir(exist_ok=True)
-
-    # 移除默认的处理器
-    logger.remove()
-
-    # 添加文件处理器（记录所有级别）
-    logger.add(
-        log_dir / log_file,
-        rotation="500 MB",  # 每 500MB 轮转一次
-        retention="30 days",  # 保留 30 天
-        compression="zip",  # 压缩旧日志
-        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-        level="DEBUG",
-        encoding="utf-8",
-        backtrace=True,
-        diagnose=True,
-    )
-
-    # 添加控制台处理器（只记录 INFO 及以上级别）
-    logger.add(
-        sink=lambda msg: print(msg, end=""),
-        format="<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{message}</cyan>",
-        level="INFO",
-        colorize=True,
-    )
-
-    logger.info("日志系统初始化完成")
 
 
 def ensure_directories() -> None:
@@ -313,7 +274,6 @@ def retry_on_failure(max_retries: int = None, delay: float = None):
 
 if __name__ == "__main__":
     # 测试工具函数
-    setup_logger()
     ensure_directories()
 
     # 测试文件名生成

@@ -7,6 +7,11 @@
 将套期保值公告的结构化信息以 Markdown 卡片形式推送到企业微信群。
 企业微信机器人 Webhook 文档：
 https://developer.work.weixin.qq.com/document/path/91770
+
+注意：
+- 本模块支持同步和异步环境
+- 在异步环境中请使用 send_to_wecom_async()
+- 在同步环境（CLI、Dify）中使用 send_to_wecom()
 """
 
 import asyncio
@@ -17,11 +22,6 @@ from curl_cffi import requests
 from astrbot.api import logger
 
 from config import config
-
-
-def _run_in_thread(func, *args, **kwargs):
-    """在线程池中运行同步函数，避免阻塞事件循环"""
-    return asyncio.run(asyncio.to_thread(func, *args, **kwargs))
 
 
 def _build_markdown(info: dict) -> str:
@@ -64,8 +64,44 @@ def _build_markdown(info: dict) -> str:
     return "\n".join(lines)
 
 
-def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
-    """推送单条公告到企业微信"""
+def _send_request_sync(url: str, payload: dict, timeout: int) -> bool:
+    """
+    同步发送 HTTP 请求到企业微信（核心实现）。
+
+    Args:
+        url: Webhook URL
+        payload: 请求体
+        timeout: 超时时间（秒）
+
+    Returns:
+        发送成功返回 True，否则 False
+    """
+    try:
+        response = requests.post(url, json=payload, timeout=timeout)
+        result = response.json()
+        if result.get("errcode") == 0:
+            return True
+        logger.error(f"推送失败：{result}")
+        return False
+    except Exception as e:
+        logger.error(f"推送异常：{e}")
+        return False
+
+
+async def send_to_wecom_async(info: dict, webhook_url: str = None) -> bool:
+    """
+    异步推送单条公告到企业微信。
+
+    在异步环境（如 AstrBot）中使用此函数，避免阻塞事件循环。
+    使用 asyncio.to_thread() 将同步网络请求放入线程池。
+
+    Args:
+        info: 公告信息字典
+        webhook_url: Webhook URL（可选，默认使用 config 中的配置）
+
+    Returns:
+        推送成功返回 True，否则 False
+    """
     if info.get("is_policy"):
         logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
         return False
@@ -77,17 +113,48 @@ def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
 
     payload = {"msgtype": "markdown", "markdown": {"content": _build_markdown(info)}}
 
+    # 使用 asyncio.to_thread() 在线程池中运行同步网络请求
+    return await asyncio.to_thread(_send_request_sync, url, payload, 10)
+
+
+def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
+    """
+    推送单条公告到企业微信（同步版本）。
+
+    在同步环境（CLI、Dify）中使用此函数。
+
+    注意：如果在异步事件循环中调用，会发出警告并阻塞执行。
+    在异步环境中请使用 await send_to_wecom_async()。
+
+    Args:
+        info: 公告信息字典
+        webhook_url: Webhook URL（可选，默认使用 config 中的配置）
+
+    Returns:
+        推送成功返回 True，否则 False
+    """
+    # 运行时检测：如果在异步事件循环中调用，发出警告
     try:
-        resp = _run_in_thread(requests.post, url, json=payload, timeout=10)
-        result = resp.json()
-        if result.get("errcode") == 0:
-            logger.info(f"推送成功：{info.get('sec_name')} - {info.get('title', '')[:30]}")
-            return True
-        logger.error(f"推送失败：{result}")
+        asyncio.get_running_loop()
+        logger.warning(
+            "send_to_wecom() 在异步环境中被同步调用，可能导致阻塞。"
+            "请使用 await send_to_wecom_async()。"
+        )
+    except RuntimeError:
+        pass  # 没有运行中的事件循环，安全执行
+
+    if info.get("is_policy"):
+        logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
         return False
-    except Exception as e:
-        logger.error(f"推送异常：{e}")
+
+    url = webhook_url or config.WECOM_WEBHOOK_URL
+    if not url:
+        logger.warning("未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL")
         return False
+
+    payload = {"msgtype": "markdown", "markdown": {"content": _build_markdown(info)}}
+
+    return _send_request_sync(url, payload, 10)
 
 
 def preview_markdown(info: dict) -> None:
