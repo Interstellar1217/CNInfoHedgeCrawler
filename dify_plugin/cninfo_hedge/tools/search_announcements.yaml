@@ -1,0 +1,94 @@
+namespace: cninfo
+name: search_announcements
+label:
+  zh_Hans: 搜索套期保值公告
+  en_US: Search Hedge Announcements
+description:
+  zh_Hans: 从巨潮资讯网搜索并获取套期保值相关公告的详细信息，包括公告标题、公司代码、公司名称、公告日期、PDF 链接等
+  en_US: Search and get detailed information about hedge announcements from CNInfo, including title, company code, company name, date, PDF link, etc.
+parameters:
+  - name: keyword
+    type: string
+    required: false
+    default: 套期保值
+    label:
+      zh_Hans: 搜索关键词
+      en_US: Search Keyword
+    description:
+      zh_Hans: 搜索公告的关键词，默认为"套期保值"
+      en_US: Keyword for searching announcements, default is "套期保值"
+    human_description:
+      zh_Hans: 可选，默认为"套期保值"，也可以搜索"外汇套保"等其他关键词
+      en_US: Optional, default is "套期保值", can also search for "外汇套保" etc.
+  - name: start_date
+    type: string
+    required: false
+    label:
+      zh_Hans: 开始日期
+      en_US: Start Date
+    description:
+      zh_Hans: 搜索的开始日期，格式 YYYY-MM-DD
+      en_US: Start date in YYYY-MM-DD format
+    human_description:
+      zh_Hans: 可选，例如 2025-01-01
+      en_US: Optional, e.g. 2025-01-01
+  - name: end_date
+    type: string
+    required: false
+    label:
+      zh_Hans: 结束日期
+      en_US: End Date
+    description:
+      zh_Hans: 搜索的结束日期，格式 YYYY-MM-DD
+      en_US: End date in YYYY-MM-DD format
+    human_description:
+      zh_Hans: 可选，例如 2025-12-31
+      en_US: Optional, e.g. 2025-12-31
+  - name: max_pages
+    type: number
+    required: false
+    default: 1
+    label:
+      zh_Hans: 最大页数
+      en_US: Max Pages
+    description:
+      zh_Hans: 最多爬取的页数，每页约 30 条公告
+      en_US: Maximum number of pages to crawl, about 30 announcements per page
+    human_description:
+      zh_Hans: 可选，默认为 1 页，建议不超过 10 页
+      en_US: Optional, default is 1, recommended not more than 10
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: 是否成功
+    total:
+      type: number
+      description: 获取到的公告总数
+    announcements:
+      type: array
+      items:
+        type: object
+        properties:
+          announcementId:
+            type: string
+            description: 公告 ID
+          secCode:
+            type: string
+            description: 股票代码
+          secName:
+            type: string
+            description: 公司名称
+          title:
+            type: string
+            description: 公告标题
+          publishTime:
+            type: string
+            description: 公告日期（毫秒时间戳）
+          pdfUrl:
+            type: string
+            description: PDF 下载链接
+    error:
+      type: string
+      description: 错误信息（如果失败）

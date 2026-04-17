@@ -1,0 +1,25 @@
+{
+  "name": "astrbot_plugin_CNInfoCrawler",
+  "version": "1.1.0",
+  "description": "CNInfoHedgeCrawler 是基于巨潮资讯的 A 股上市公司公告爬取工具，支持任意关键词搜索、日期范围过滤、PDF 批量下载和企业微信推送。",
+  "author": "Interstellar1217",
+  "repo": "https://github.com/Interstellar1217/CNInfoHedgeCrawler",
+  "category": "实用工具",
+  "keyword": [
+    "套期保值",
+    "公告查询",
+    "巨潮资讯",
+    "业绩预告",
+    "金融"
+  ],
+  "config": {
+    "keyword_default": {
+        "value": "套期保值",
+        "description": "默认搜索关键词"
+    },
+    "max_pages_default": {
+        "value": 1,
+        "description": "默认最大爬取页数"
+    }
+  }
+}

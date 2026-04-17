@@ -1,52 +1,256 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""通知模块 CLI - 向后兼容"""
+"""
+企业微信机器人推送模块
 
-import sys
+将套期保值公告的结构化信息以 Markdown 卡片形式推送到企业微信群。
+企业微信机器人 Webhook 文档：
+https://developer.work.weixin.qq.com/document/path/91770
+
+注意：
+- 本模块支持同步和异步环境
+- 在异步环境中请使用 send_to_wecom_async()
+- 在同步环境（CLI、Dify）中使用 send_to_wecom()
+"""
+
+import asyncio
 from pathlib import Path
+from typing import Optional
 
-from core.crawler import CrawlerService
-from core.extractor import extract_from_pdf
-from core.notifier import send_to_wecom
+from curl_cffi import requests
+from astrbot.api import logger
+
+from config import config
+
+
+def _build_markdown(info: dict) -> str:
+    """构建 Markdown 卡片内容"""
+    # 安全获取字段，避免 KeyError
+    sec_name = info.get('sec_name', '')
+    sec_code = info.get('sec_code', '')
+    sec = f"{sec_name}({sec_code})" if sec_name else ''
+
+    date = info.get("publish_date", "")
+
+    lines = [
+        "## 📋 套期保值公告",
+        f"**公司：** {sec}",
+        f"**标题：** {info.get('title', '')}",
+        f"**公告日期：** {date}",
+    ]
+
+    if info.get("varieties"):
+        lines.append(f"**套保品种：** {info['varieties']}")
+    if info.get("quota"):
+        lines.append(f"**套保额度：** {info['quota']}")
+    if info.get("period"):
+        lines.append(f"**有效期：** {info['period']}")
+    if info.get("purpose"):
+        lines.append(f"**套保目的：** {info['purpose']}")
+    if info.get("authority"):
+        lines.append(f"**授权机构：** {info['authority']}")
+
+    ann_id = info.get("announcement_id", "")
+    org_id = info.get("org_id", "")
+    sec_code = info.get("sec_code", "")
+    if ann_id:
+        detail_url = (
+            f"https://www.cninfo.com.cn/new/disclosure/detail"
+            f"?stockCode={sec_code}&announcementId={ann_id}&orgId={org_id}"
+        )
+        lines.append(f"[查看原文]({detail_url})")
+
+    return "\n".join(lines)
+
+
+def _send_request_sync(url: str, payload: dict, timeout: int) -> bool:
+    """
+    同步发送 HTTP 请求到企业微信（核心实现）。
+
+    Args:
+        url: Webhook URL
+        payload: 请求体
+        timeout: 超时时间（秒）
+
+    Returns:
+        发送成功返回 True，否则 False
+    """
+    try:
+        response = requests.post(url, json=payload, timeout=timeout)
+        result = response.json()
+        if result.get("errcode") == 0:
+            return True
+        logger.error(f"推送失败：{result}")
+        return False
+    except Exception as e:
+        logger.error(f"推送异常：{e}")
+        return False
+
+
+async def send_to_wecom_async(info: dict, webhook_url: str = None) -> bool:
+    """
+    异步推送单条公告到企业微信。
+
+    在异步环境（如 AstrBot）中使用此函数，避免阻塞事件循环。
+    使用 asyncio.to_thread() 将同步网络请求放入线程池。
+
+    Args:
+        info: 公告信息字典
+        webhook_url: Webhook URL（可选，默认使用 config 中的配置）
+
+    Returns:
+        推送成功返回 True，否则 False
+    """
+    if info.get("is_policy"):
+        logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
+        return False
+
+    url = webhook_url or config.WECOM_WEBHOOK_URL
+    if not url:
+        logger.warning("未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL")
+        return False
+
+    payload = {"msgtype": "markdown", "markdown": {"content": _build_markdown(info)}}
+
+    # 使用 asyncio.to_thread() 在线程池中运行同步网络请求
+    return await asyncio.to_thread(_send_request_sync, url, payload, 10)
+
+
+def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
+    """
+    推送单条公告到企业微信（同步版本）。
+
+    在同步环境（CLI、Dify）中使用此函数。
+
+    注意：如果在异步事件循环中调用，会发出警告并阻塞执行。
+    在异步环境中请使用 await send_to_wecom_async()。
+
+    Args:
+        info: 公告信息字典
+        webhook_url: Webhook URL（可选，默认使用 config 中的配置）
+
+    Returns:
+        推送成功返回 True，否则 False
+    """
+    # 运行时检测：如果在异步事件循环中调用，发出警告
+    try:
+        asyncio.get_running_loop()
+        logger.warning(
+            "send_to_wecom() 在异步环境中被同步调用，可能导致阻塞。"
+            "请使用 await send_to_wecom_async()。"
+        )
+    except RuntimeError:
+        pass  # 没有运行中的事件循环，安全执行
+
+    if info.get("is_policy"):
+        logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
+        return False
+
+    url = webhook_url or config.WECOM_WEBHOOK_URL
+    if not url:
+        logger.warning("未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL")
+        return False
+
+    payload = {"msgtype": "markdown", "markdown": {"content": _build_markdown(info)}}
+
+    return _send_request_sync(url, payload, 10)
 
 
 def preview_markdown(info: dict) -> None:
-    from core.notifier import build_markdown
+    """预览 Markdown 内容"""
     print("\n" + "=" * 60)
     print("【推送预览】")
     print("=" * 60)
-    print(build_markdown(info))
+    print(_build_markdown(info))
     print("=" * 60 + "\n")
 
 
-def main():
+def load_metadata(csv_path: Path = None) -> Optional["pd.DataFrame"]:
+    """加载 announcements_metadata.csv，返回 DataFrame，失败返回 None"""
+    try:
+        import pandas as pd
+        p = csv_path or config.get_data_dir() / config.METADATA_FILE
+        if not p.exists():
+            logger.warning(f"元数据文件不存在：{p}")
+            return None
+        return pd.read_csv(p, encoding="utf-8-sig", dtype={"announcementId": str, "secCode": str})
+    except Exception as e:
+        logger.error(f"加载元数据失败：{e}")
+        return None
+
+
+def lookup_announcement(ann_id: str, df: "pd.DataFrame") -> dict:
+    """从 DataFrame 中按 announcementId 查找元数据，返回 announcement dict"""
+    rows = df[df["announcementId"] == str(ann_id)]
+    if rows.empty:
+        return {}
+    row = rows.iloc[0]
+    return {
+        "announcementId": str(row.get("announcementId", "")),
+        "secCode":        str(row.get("secCode", "")),
+        "secName":        str(row.get("secName", "")),
+        "orgId":          str(row.get("orgId", "")),
+        "title":          str(row.get("title", "")),
+        "publishTime":    str(row.get("publishTime", "")),
+        "adjunctUrl":     str(row.get("adjunctUrl", "")),
+    }
+
+
+def pdf_path_from_metadata(row: dict, data_dir: Path = None) -> Optional[Path]:
     """
-    CLI:
+    根据元数据推断本地 PDF 路径。
+    文件名格式：{title}_{announcementId}.pdf（与 crawler.py generate_filename 一致）
+    """
+    data_dir = data_dir or config.get_data_dir()
+    ann_id = row.get("announcementId", "")
+    # 直接按 announcementId 后缀匹配，兼容各种标题
+    matches = list(data_dir.glob(f"*_{ann_id}.pdf")) + list(data_dir.glob(f"*_{ann_id}.PDF"))
+    return matches[0] if matches else None
+
+
+if __name__ == "__main__":
+    """
+    CLI 用法：
+
+      # 按文件路径（自动从 CSV 补全元数据）
+      python -m notifiers.notifier data/关于开展外汇套期保值业务的公告_1225015373.pdf
+
+      # 按公告 ID（自动从 CSV 查找文件路径和元数据）
       python -m notifiers.notifier --id 1225015373
-      python -m notifiers.notifier --id 1225015373 --send
+
+      # 批量推送 CSV 中所有记录（仅预览，不推送）
       python -m notifiers.notifier --batch
+
+      # 加 --send 实际推送
+      python -m notifiers.notifier --id 1225015373 --send
+
+      # 临时指定 Webhook
+      python -m notifiers.notifier --id 1225015373 --send --webhook https://qyapi.weixin.qq.com/...
     """
     import argparse
+    import sys
+
+    from extractors.extractor import extract_hedge_info
 
     parser = argparse.ArgumentParser(description="套期保值公告推送工具")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("pdf", nargs="?", help="PDF 文件路径")
-    group.add_argument("--id", dest="ann_id", help="公告 ID")
-    group.add_argument("--batch", action="store_true", help="批量处理 CSV")
-    parser.add_argument("--send", action="store_true", help="实际推送")
-    parser.add_argument("--webhook", default=None, help="临时 Webhook URL")
-
+    group.add_argument("--id", dest="ann_id", help="公告 ID（从 CSV 自动查找）")
+    group.add_argument("--batch", action="store_true", help="批量处理 CSV 中所有记录")
+    parser.add_argument("--send",    action="store_true", help="实际推送到企业微信（默认仅预览）")
+    parser.add_argument("--webhook", default=None,        help="临时指定 Webhook URL")
+    parser.add_argument("--csv",     default=None,        help="指定元数据 CSV 路径")
     args = parser.parse_args()
 
-    service = CrawlerService()
-    df = service.get_metadata_df()
+    df = load_metadata(Path(args.csv) if args.csv else None)
 
     def _process(pdf_path: Path, announcement: dict):
         if not pdf_path.exists():
             print(f"[跳过] 文件不存在：{pdf_path}")
             return
-        info = extract_from_pdf(pdf_path, announcement)
+        # 补全 org_id 供详情页链接使用
+        info = extract_hedge_info(pdf_path, announcement)
         info["org_id"] = announcement.get("orgId", "")
         preview_markdown(info)
         if args.send:
@@ -55,13 +259,15 @@ def main():
         else:
             print("（仅预览，未推送。加 --send 参数可推送）")
 
+    # ── 模式 1：指定文件路径 ──────────────────────────────────────────────────
     if args.pdf:
         pdf_path = Path(args.pdf)
         stem = pdf_path.stem
         ann_id = stem.rsplit("_", 1)[-1] if "_" in stem else ""
+        # 优先从 CSV 查元数据
         announcement = {}
         if df is not None and ann_id:
-            announcement = service.lookup_announcement(ann_id)
+            announcement = lookup_announcement(ann_id, df)
         if not announcement:
             announcement = {
                 "announcementId": ann_id,
@@ -71,20 +277,22 @@ def main():
             }
         _process(pdf_path, announcement)
 
+    # ── 模式 2：指定公告 ID ───────────────────────────────────────────────────
     elif args.ann_id:
         if df is None:
-            print("无法加载元数据 CSV")
+            print("无法加载元数据 CSV，请检查 data/announcements_metadata.csv")
             sys.exit(1)
-        announcement = service.lookup_announcement(args.ann_id)
+        announcement = lookup_announcement(args.ann_id, df)
         if not announcement:
             print(f"CSV 中未找到公告 ID: {args.ann_id}")
             sys.exit(1)
-        pdf_path = service.find_pdf_path(args.ann_id)
+        pdf_path = pdf_path_from_metadata(announcement)
         if pdf_path is None:
-            print(f"本地未找到 PDF: {args.ann_id}")
+            print(f"本地未找到对应 PDF，announcementId={args.ann_id}")
             sys.exit(1)
         _process(pdf_path, announcement)
 
+    # ── 模式 3：批量处理 ──────────────────────────────────────────────────────
     elif args.batch:
         if df is None:
             print("无法加载元数据 CSV")
@@ -94,11 +302,11 @@ def main():
         for _, row in df.iterrows():
             announcement = row.to_dict()
             announcement["announcementId"] = str(announcement.get("announcementId", ""))
-            pdf_path = service.find_pdf_path(announcement["announcementId"])
+            pdf_path = pdf_path_from_metadata(announcement)
             if pdf_path is None:
                 skip_count += 1
                 continue
-            info = extract_from_pdf(pdf_path, announcement)
+            info = extract_hedge_info(pdf_path, announcement)
             info["org_id"] = announcement.get("orgId", "")
             if info.get("is_policy"):
                 skip_count += 1
@@ -107,13 +315,8 @@ def main():
             if args.send:
                 if send_to_wecom(info, webhook_url=args.webhook):
                     ok_count += 1
-                import time
-                time.sleep(0.5)
+                import time; time.sleep(0.5)  # 避免触发频率限制
         print(f"\n批量完成：推送 {ok_count} 条，跳过 {skip_count} 条")
 
     else:
         parser.print_help()
-
-
-if __name__ == "__main__":
-    main()

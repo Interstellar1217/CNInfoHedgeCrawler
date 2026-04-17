@@ -1,0 +1,11 @@
+language: zh-CN
+name: cninfo
+label:
+  zh_Hans: 巨潮资讯套期保值公告
+  en_US: CNInfo Hedge Announcement
+description:
+  zh_Hans: 从巨潮资讯网爬取套期保值相关公告，提取关键信息并返回结构化数据
+  en_US: Crawl hedge announcements from CNInfo and return structured data
+icon: icon.svg
+version: 0.0.2
+provider: cninfo
