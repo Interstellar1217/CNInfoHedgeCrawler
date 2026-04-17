@@ -2,19 +2,19 @@
 curl_cffi>=0.7.0
 
 # HTML解析
-beautifulsoup4==4.12.2
+beautifulsoup4>=4.12.2
 
 # 数据处理
-pandas==3.0.1
+pandas>=3.0.0
 
 # 进度显示
-tqdm==4.66.1
+tqdm>=4.66.0
 
 # 日志记录
-loguru==0.7.2
+loguru>=0.7.0
 
 # PDF解析
-pdfplumber==0.11.4
+pdfplumber>=0.11.0
 # FastAPI 服务
 fastapi>=0.109.0
 uvicorn>=0.27.0

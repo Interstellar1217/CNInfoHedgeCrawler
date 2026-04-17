@@ -1,1 +1,6 @@
 curl_cffi>=0.7.0
+beautifulsoup4>=4.12.2
+pandas>=3.0.0
+pdfplumber>=0.11.0
+loguru>=0.7.0
+tqdm>=4.66.0
