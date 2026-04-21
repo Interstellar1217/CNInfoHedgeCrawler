@@ -4,8 +4,10 @@
 """AstrBot 插件 - 巨潮资讯套期保值公告查询。"""
 
 import asyncio
+import sys
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from curl_cffi.requests import Session
@@ -13,6 +15,11 @@ from curl_cffi.requests import Session
 from astrbot.api import logger
 from astrbot.api.event import AstrMessageEvent, MessageChain, filter
 from astrbot.api.star import Context, Star, register
+
+# 将插件目录添加到 sys.path，确保能导入 config 模块
+PLUGIN_DIR = Path(__file__).parent
+if str(PLUGIN_DIR) not in sys.path:
+    sys.path.insert(0, str(PLUGIN_DIR))
 
 from config import config
 
