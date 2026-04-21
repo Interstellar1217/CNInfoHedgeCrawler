@@ -6,7 +6,7 @@
   },
   "max_pages_default": {
     "description": "默认最大爬取页数",
-    "type": "number",
+    "type": "int",
     "default": 1
   }
 }

@@ -32,7 +32,7 @@ config:
   max_pages_default:
     value: 1
     description: "默认最大爬取页数"
-    type: number
+    type: int
 
 # 命令列表
 commands:
