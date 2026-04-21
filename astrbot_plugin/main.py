@@ -15,12 +15,13 @@ from astrbot.api import logger
 from astrbot.api.event import AstrMessageEvent, MessageChain, filter
 from astrbot.api.star import Context, Star, register
 
-# 导入项目配置（使用绝对路径）
+# 导入项目配置
 PLUGIN_ROOT = Path(__file__).parent.parent
 CONFIG_PATH = PLUGIN_ROOT / "config.py"
 
 # 动态导入 config 模块
 import importlib.util
+
 spec = importlib.util.spec_from_file_location("config", CONFIG_PATH)
 config_module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(config_module)
@@ -38,10 +39,9 @@ class CNInfoHedgePlugin(Star):
         logger.info("巨潮资讯套期保值公告插件已加载")
 
     async def initialize(self) -> None:
-        """插件初始化时创建 Session"""
+        """初始化：创建 Session 并配置数据目录。"""
         self.session = Session(impersonate="chrome136")
         self.session.headers.update(project_config.HEADERS)
-        # 使用 StarTools 获取规范数据目录
         try:
             from astrbot.api.star import StarTools
             data_dir = StarTools.get_data_dir("cninfo_hedge")
@@ -54,13 +54,13 @@ class CNInfoHedgePlugin(Star):
             logger.warning(f"获取插件数据目录失败：{e}，使用默认目录")
 
     async def destroy(self) -> None:
-        """插件卸载时关闭 Session，释放资源"""
+        """销毁：关闭 Session，释放资源。"""
         if self.session is not None:
             self.session.close()
             logger.info("Session 已关闭")
 
     def _is_date(self, s: str) -> bool:
-        """判断字符串是否为日期格式"""
+        """判断字符串是否为日期格式 (YYYY-MM-DD)。"""
         if len(s) != 10 or s.count("-") != 2:
             return False
         try:
@@ -70,7 +70,7 @@ class CNInfoHedgePlugin(Star):
             return False
 
     async def _run_in_executor(self, func, *args, **kwargs):
-        """在线程池中运行同步函数，避免阻塞事件循环"""
+        """在线程池中运行同步函数，避免阻塞事件循环。"""
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, lambda: func(*args, **kwargs))
 
@@ -81,7 +81,7 @@ class CNInfoHedgePlugin(Star):
         end_date: Optional[str] = None,
         max_pages: int = 1,
     ) -> Dict[str, Any]:
-        """同步版本的搜索函数（在线程池中运行）"""
+        """同步搜索函数（在线程池中运行）。"""
         try:
             announcements: List[Dict[str, Any]] = []
             for page_num in range(1, max_pages + 1):
@@ -94,7 +94,6 @@ class CNInfoHedgePlugin(Star):
                 if not data:
                     break
                 announcements.extend(self._parse_announcements(data))
-                # 在线程池中直接使用 time.sleep，确保延时生效
                 time.sleep(project_config.get_random_delay())
             for ann in announcements:
                 ann["pdfUrl"] = self._generate_pdf_url(ann["announcementId"], ann.get("adjunctUrl"))
@@ -110,13 +109,13 @@ class CNInfoHedgePlugin(Star):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
     ) -> Optional[Dict[str, Any]]:
-        """获取公告列表（同步网络请求）"""
+        """获取公告列表。"""
         params = project_config.get_search_params(
             keyword=keyword,
             page_num=page_num,
             page_size=project_config.PAGE_SIZE,
             start_date=start_date,
-            end_date=end_date
+            end_date=end_date,
         )
         try:
             response = self.session.post(project_config.LIST_API, data=params, timeout=30)
@@ -131,7 +130,7 @@ class CNInfoHedgePlugin(Star):
             return None
 
     def _parse_announcements(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """解析公告列表数据"""
+        """解析公告列表数据。"""
         announcements: List[Dict[str, Any]] = []
         for item in data.get("announcements", []):
             try:
@@ -155,7 +154,7 @@ class CNInfoHedgePlugin(Star):
         return announcements
 
     def _generate_pdf_url(self, announcement_id: str, adjunct_url: str = None) -> str:
-        """生成 PDF 下载链接"""
+        """生成 PDF 下载链接。"""
         if adjunct_url:
             if adjunct_url.startswith("http"):
                 return adjunct_url
@@ -166,7 +165,7 @@ class CNInfoHedgePlugin(Star):
     @filter.command("套保查询")
     @filter.command("套保")
     async def search_handler(self, event: AstrMessageEvent, message: str = ""):
-        """套期保值公告查询命令"""
+        """处理套期保值公告查询命令。"""
         args = message.strip().split() if message and message.strip() else []
         keyword = project_config.DEFAULT_KEYWORD
         start_date = None
@@ -187,7 +186,6 @@ class CNInfoHedgePlugin(Star):
         await event.set_result(MessageChain().message_plain(f"正在查询套期保值公告，关键词：{keyword}..."))
 
         try:
-            # 在线程池中运行同步搜索函数
             result = await self._run_in_executor(
                 self.search_announcements_sync,
                 keyword=keyword,

@@ -1,0 +1,12 @@
+{
+  "keyword_default": {
+    "description": "默认搜索关键词",
+    "type": "string",
+    "default": "套期保值"
+  },
+  "max_pages_default": {
+    "description": "默认最大爬取页数",
+    "type": "number",
+    "default": 1
+  }
+}
