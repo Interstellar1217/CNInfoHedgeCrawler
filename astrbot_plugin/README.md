@@ -187,6 +187,7 @@ context.register_command(
 
 ```python
 from astrbot.api.event import AstrMessageEvent, MessageChain
+from astrbot.api import logger
 
 await event.set_result(MessageChain().message_plain("回复内容"))
 ```
