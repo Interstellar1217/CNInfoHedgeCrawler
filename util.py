@@ -20,7 +20,7 @@ from typing import Optional, Dict, Any, Callable, TypeVar
 from urllib.parse import urlparse, parse_qs
 
 from curl_cffi import requests
-from astrbot.api import logger
+from loguru import logger
 from config import config
 
 

@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 本项目是巨潮资讯网套期保值公告爬虫，支持 PDF 下载、信息提取和企业微信推送。
 
 ---
@@ -133,6 +135,21 @@ CNInfoHedgeCrawler/
 
 ---
 
+## 同步/异步架构设计
+
+本项目核心爬虫 (`crawler.py`) 是**同步代码**，使用 `curl_cffi` 的同步 Session 发起网络请求。为了在异步环境（如 Astrbot 插件）中使用，采用了**ThreadPoolExecutor**模式：
+
+```python
+# 在线程池中运行同步函数，避免阻塞事件循环
+async def _run_in_executor(self, func, *args, **kwargs):
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, lambda: func(*args, **kwargs))
+```
+
+**重要**：`CNInfoHedgeCrawler` 和 `CNInfoHedgeTool` 都包含运行时检测，如果在异步环境中直接调用（而非通过线程池），会抛出 `RuntimeError`。
+
+---
+
 ## 支持的套保品种
 
 外汇、美元、欧元、港元、日元、英镑、铜、铝、锌、镍、铅、锡、黄金、白银、原油、天然气、橡胶、大豆、玉米、小麦、棉花、铁矿石、螺纹钢、热轧卷板、PTA、甲醇、乙二醇、聚乙烯、聚丙烯、碳酸锂、氢氧化锂
@@ -145,11 +162,13 @@ CNInfoHedgeCrawler/
 - **用途**: 为 AI Agent 提供工具
 - **工具**: `search_announcements` - 搜索公告返回 JSON
 - **入口**: `invoke(tool_name, credentials, tool_parameters)`
+- **部署**: 复制到 Dify API 插件目录或打包上传到 Dify 云
 
 ### Astrbot 插件（astrbot_plugin/）
 - **用途**: QQ/微信聊天命令查询
 - **命令**: `/套保查询 [关键词] [日期]`, `/套保 [日期]`
 - **返回**: 聊天消息格式（前 5 条摘要）
+- **部署**: 复制到 Astrbot 插件目录，安装依赖后重启
 
 ---
 
@@ -157,9 +176,47 @@ CNInfoHedgeCrawler/
 
 | 包 | 用途 |
 |----|------|
-| curl_cffi | TLS 指纹模拟 |
+| curl_cffi | TLS 指纹模拟（Chrome136） |
 | pdfplumber | PDF 文本提取 |
 | pandas | CSV 读写 |
 | loguru | 日志 |
 | tqdm | 下载进度 |
 | beautifulsoup4 | HTML 解析 |
+| astrbot | Astrbot 插件 SDK |
+
+---
+
+## 调试技巧
+
+### 预览单条公告
+```bash
+python -m notifiers.notifier --id 1225015373
+```
+
+### 测试 PDF 提取效果
+```bash
+python -m notifiers.notifier "data/xxx.pdf"
+```
+
+### 查看提取的字段
+使用 `extractors/extractor.py` 的 `extract_hedge_info()` 函数：
+```python
+from extractors.extractor import extract_hedge_info
+info = extract_hedge_info(Path("data/xxx.pdf"), {"secName": "某公司", "secCode": "600123"})
+print(info)
+```
+
+### 日志级别
+修改 `util.py` 中的 `setup_logger()` 配置日志级别。
+
+---
+
+## 开发注意事项
+
+1. **不要添加同步测试到异步环境**：爬虫核心逻辑是同步的，测试时也应在同步环境中运行。
+
+2. **正则规则修改**：所有正则都作用于 `_normalize()` 处理后的紧凑文本（去除所有空白），修改时无需考虑 PDF 排版问题。
+
+3. **企业微信推送测试**：使用 `--webhook` 参数临时指定测试 Webhook URL。
+
+4. **断点续爬**：已下载记录保存在 `data/announcements_metadata.csv`，删除此文件将重新爬取所有公告。

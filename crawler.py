@@ -25,7 +25,7 @@ import pandas as pd
 from curl_cffi import requests
 from curl_cffi.requests import Session
 from tqdm import tqdm
-from astrbot.api import logger
+from loguru import logger
 from bs4 import BeautifulSoup
 
 from config import config

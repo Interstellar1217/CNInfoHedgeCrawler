@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import List
 
 import pdfplumber
-from astrbot.api import logger
+from loguru import logger
 
 
 # ── 文本标准化 ────────────────────────────────────────────────────────────────

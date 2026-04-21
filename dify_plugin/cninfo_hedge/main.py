@@ -21,7 +21,7 @@ from concurrent.futures import ThreadPoolExecutor
 from curl_cffi import requests
 from curl_cffi.requests import Session
 
-from astrbot.api import logger
+from loguru import logger
 
 # 导入项目配置（使用绝对路径）
 PLUGIN_ROOT = Path(__file__).parent.parent.parent

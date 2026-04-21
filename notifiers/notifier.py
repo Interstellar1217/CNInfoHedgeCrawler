@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Optional
 
 from curl_cffi import requests
-from astrbot.api import logger
+from loguru import logger
 
 from config import config
 
