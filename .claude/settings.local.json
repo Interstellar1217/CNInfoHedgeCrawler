@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "WebFetch(domain:docs.astrbot.app)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

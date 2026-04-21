@@ -1,11 +1,11 @@
-# Astrbot Plugin Metadata
+# AstrBot Plugin Metadata
 # 文档：https://astrbot.app/dev/plugin.html
 
-name: astrbot_plugin_CNInfoCrawler
-display_name: 巨潮资讯上市公司公告自动爬取工具
-desc: CNInfoHedgeCrawler 是基于巨潮资讯的 A 股上市公司公告爬取工具，支持任意关键词搜索、日期范围过滤、PDF 批量下载和企业微信推送。
+name: cninfo_hedge
+display_name: 巨潮资讯套期保值公告查询
+desc: 在 QQ/微信/Telegram 中查询 A 股上市公司套期保值公告，支持关键词搜索和日期范围过滤。
 author: Interstellar1217
-version: "1.0.0"
+version: "1.1.0"
 repo: https://github.com/Interstellar1217/CNInfoHedgeCrawler
 social_link: https://github.com/Interstellar1217
 category: 实用工具
@@ -15,7 +15,6 @@ tags:
   - 套期保值
   - 公告查询
   - 巨潮资讯
-  - 业绩预告
   - 金融
 
 # 插件类型
@@ -24,10 +23,7 @@ type: standard
 # Python 版本要求
 python_version: ">=3.10"
 
-# 依赖管理
-# Astrbot 会自动安装 requirements.txt 中的依赖
-
-# 配置项（可选，用户可在控制台修改）
+# 配置项
 config:
   keyword_default:
     value: "套期保值"
@@ -38,9 +34,9 @@ config:
     description: "默认最大爬取页数"
     type: number
 
-# 命令列表（供参考，实际在 main.py 中注册）
+# 命令列表
 commands:
   - name: 套保查询
     description: "搜索公告，用法：/套保查询 [关键词] [开始日期] [结束日期]"
   - name: 套保
-    description: "快捷查询，用法：/套保 2025-01-01 2025-12-31"
+    description: "快捷查询，用法：/套保 [开始日期] [结束日期]"
