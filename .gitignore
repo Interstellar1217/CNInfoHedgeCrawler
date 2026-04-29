@@ -19,6 +19,9 @@ ENV/
 # Claude Code 本地配置
 .claude/
 
+# CodeBuddy 本地配置和计划
+.codebuddy/
+
 # Dify 插件测试日志
 dify_plugin.log
 
