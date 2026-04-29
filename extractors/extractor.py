@@ -14,6 +14,7 @@ PDF 数据提取模块
 """
 
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import List
 
@@ -168,6 +169,7 @@ def extract_hedge_info(pdf_path: Path, announcement: dict) -> dict:
 
     result = {
         "announcement_id": announcement.get("announcementId", ""),
+        "org_id": announcement.get("orgId", ""),
         "sec_code": sec_code,
         "sec_name": sec_name,
         "title": announcement.get("title", ""),
@@ -198,7 +200,6 @@ def _format_date(publish_time) -> str:
     if not publish_time:
         return ""
     try:
-        from datetime import datetime
         # 使用本地时区而非 UTC，避免跨日问题
         return datetime.fromtimestamp(int(publish_time) / 1000).strftime("%Y-%m-%d")
     except (ValueError, TypeError, OSError):

@@ -17,7 +17,7 @@ import asyncio
 import json
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Generator
+from typing import Dict, List, Optional, Generator, Tuple
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
@@ -325,8 +325,8 @@ class CNInfoHedgeCrawler:
             content_type = response.headers.get('Content-Type', '')
             if 'application/pdf' not in content_type and 'application/octet-stream' not in content_type:
                 logger.warning(f"非 PDF 内容 {announcement_id}: {content_type}")
-                # 保存为 HTML 文件作为备份
-                save_path = save_path.with_suffix('.html')
+                # 非 PDF 内容，不保存，返回 False
+                return False
 
             # 获取文件大小
             total_size = int(response.headers.get('Content-Length', 0))
@@ -390,7 +390,7 @@ class CNInfoHedgeCrawler:
 
         logger.info(f"元数据已保存到 {self.metadata_file}，新增 {len(announcements)} 条记录")
 
-    def crawl_page(self, page_num: int, start_date: str = None, end_date: str = None) -> List[Dict]:
+    def crawl_page(self, page_num: int, start_date: str = None, end_date: str = None) -> Tuple[List[Dict], int]:
         """
         爬取单页公告
 
@@ -403,18 +403,20 @@ class CNInfoHedgeCrawler:
             end_date: 结束日期（可选）
 
         Returns:
-            本页成功下载的公告列表
+            (本页成功下载的公告列表, 本页公告总数)
         """
         # 获取列表数据
         data = self.fetch_announcement_list(page_num, start_date=start_date, end_date=end_date)
         if not data:
-            return []
+            return [], 0
+
 
         # 解析公告
         announcements = self.parse_announcements(data)
+        total_in_page = len(announcements)
         if not announcements:
             logger.info(f"第 {page_num} 页没有公告数据")
-            return []
+            return [], total_in_page
 
         # 过滤已下载的公告
         new_announcements = [
@@ -424,7 +426,7 @@ class CNInfoHedgeCrawler:
 
         if not new_announcements:
             logger.info(f"第 {page_num} 页所有公告都已下载过")
-            return []
+            return [], total_in_page
 
         logger.info(f"第 {page_num} 页发现 {len(new_announcements)} 条新公告")
 
@@ -470,7 +472,7 @@ class CNInfoHedgeCrawler:
         if downloaded:
             self.save_metadata_to_csv(downloaded)
 
-        return downloaded
+        return downloaded, total_in_page
 
     def crawl_all(self, max_pages: int = None, start_page: int = 1,
                   start_date: str = None, end_date: str = None) -> Dict:
@@ -516,7 +518,7 @@ class CNInfoHedgeCrawler:
 
                 try:
                     # 爬取当前页
-                    downloaded = self.crawl_page(page, start_date=start_date, end_date=end_date)
+                    downloaded, total_in_page = self.crawl_page(page, start_date=start_date, end_date=end_date)
                 except Exception as e:
                     logger.error(f"第 {page} 页爬取失败：{e}")
                     consecutive_empty += 1
@@ -529,12 +531,8 @@ class CNInfoHedgeCrawler:
                     continue
 
                 stats['total_pages'] += 1
-                # 修复：统计口径改为本页获取到的公告总数，而非下载成功数
-                stats['total_announcements'] += len(downloaded) + len([
-                    a for a in self.parse_announcements(
-                        self.fetch_announcement_list(page, start_date=start_date, end_date=end_date) or {}
-                    ) if a['announcementId'] in self.downloaded_ids
-                ])
+                # 使用 crawl_page 返回的本页公告总数，避免重复请求
+                stats['total_announcements'] += total_in_page
 
                 if downloaded:
                     stats['downloaded'] += len(downloaded)

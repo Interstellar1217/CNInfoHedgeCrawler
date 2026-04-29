@@ -11,7 +11,7 @@
 
 支持任意关键词模糊查询，从 [巨潮资讯网](https://www.cninfo.com.cn) 自动爬取公告，提取关键信息并推送到企业微信
 
-[功能特性](#-功能特性) • [快速开始](#-快速开始) • [插件生态](#-插件生态) • [配置说明](#-配置说明) • [开发计划](#-开发计划)
+[功能特性](#-功能特性) • [快速开始](#-快速开始) • [插件生态](#-插件生态) • [配置说明](#-配置说明)
 
 </div>
 
@@ -127,29 +127,27 @@ cd dify_plugin && zip -r cninfo_hedge.zip cninfo_hedge/
 | end_date | string | - | 结束日期 YYYY-MM-DD |
 | max_pages | number | 1 | 最大爬取页数 |
 
-### Astrbot 插件
+### AstrBot 插件
 
 **用途**: 在 QQ/微信/Telegram 中通过命令查询公告
 
 **部署方式**:
 
 ```bash
-# 复制插件到 Astrbot 目录
-cp -r astrbot_plugin /path/to/astrbot/plugins/astrbot_plugin_cninfo_hedge
-
-# 安装依赖并重启
-cd /path/to/astrbot/plugins/astrbot_plugin_cninfo_hedge
-pip install -r requirements.txt
+# 安装 astrbot 依赖后，将项目作为插件加载
+pip install astrbot
+# 在 astrbot 配置中添加本项目的路径作为插件目录
 ```
 
 **使用命令**:
+
 ```
 /套保查询                          # 默认查询
 /套保查询 外汇套保                  # 指定关键词
 /套保 2025-01-01 2025-12-31        # 按日期范围
 ```
 
-详细文档：[dify_plugin/README.md](dify_plugin/README.md) • [astrbot_plugin/README.md](astrbot_plugin/README.md)
+详细文档：[dify_plugin/README.md](dify_plugin/README.md)
 
 ## 📁 项目结构
 
@@ -158,12 +156,12 @@ CNInfoHedgeCrawler/
 ├── config.py                  # 配置中心（URL、请求头、Webhook 等）
 ├── crawler.py                 # 爬虫核心逻辑
 ├── util.py                    # 工具函数（日志、重试、延时）
+├── main.py                    # AstrBot 插件入口
 ├── extractors/
 │   └── extractor.py           # PDF 文本提取与字段解析
 ├── notifiers/
 │   └── notifier.py            # 企业微信推送 + CLI 工具
 ├── dify_plugin/               # Dify AI 平台插件
-├── astrbot_plugin/            # Astrbot 聊天机器人插件
 ├── data/                      # 数据存储
 │   ├── announcements_metadata.csv
 │   └── *.pdf
@@ -248,33 +246,11 @@ A: 直接查看 `data/announcements_metadata.csv` 文件，或使用推送工具
 ### Q: 插件无法加载？
 A: 确保已安装依赖 `pip install -r requirements.txt`，并检查插件目录结构是否正确。
 
-## 📅 开发计划
-
-- [ ] 支持更多公告类型（ESG、社会责任报告等）
-- [ ] 增加 PDF 表格提取能力
-- [ ] 提供 REST API 接口
-- [ ] 支持更多推送渠道（钉钉、飞书）
-- [ ] 添加数据可视化面板
-
-欢迎提交 Issue 和 PR！
-
 ## 📄 许可证
 
 本项目采用 [MIT 许可证](LICENSE)
 
-```
 Copyright (c) 2025 CNInfoHedgeCrawler Contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
 
 ## 🙏 致谢
 

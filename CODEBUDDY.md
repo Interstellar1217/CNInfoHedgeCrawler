@@ -1,6 +1,6 @@
-# CLAUDE.md
+# CODEBUDDY.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to CodeBuddy when working with code in this repository.
 
 本项目是巨潮资讯网套期保值公告爬虫，支持 PDF 下载、信息提取和企业微信推送。
 
@@ -74,7 +74,7 @@ async def _run_in_executor(self, func, *args, **kwargs):
     return await loop.run_in_executor(None, lambda: func(*args, **kwargs))
 ```
 
-`CNInfoHedgeCrawler` 包含运行时检测，如果在异步环境中直接调用（而非通过线程池），会抛出 `RuntimeError`。
+`CNInfoHedgeCrawler` 和 `CNInfoHedgeTool` 包含运行时检测，如果在异步环境中直接调用（而非通过线程池），会抛出 `RuntimeError`。
 
 ### 关键设计
 

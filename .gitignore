@@ -43,3 +43,9 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+
+# 临时文件和缓存
+data/temp/
+data/t2i_templates/
+core/
+astrbot_plugin/
