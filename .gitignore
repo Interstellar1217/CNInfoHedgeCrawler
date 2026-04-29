@@ -22,6 +22,9 @@ ENV/
 # CodeBuddy 本地配置和计划
 .codebuddy/
 
+# Qoder 本地配置
+.qoder/
+
 # Dify 插件测试日志
 dify_plugin.log
 
