@@ -55,3 +55,4 @@ data/temp/
 data/t2i_templates/
 core/
 astrbot_plugin/
+.history/

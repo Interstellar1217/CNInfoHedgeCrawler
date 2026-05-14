@@ -16,6 +16,7 @@
 import asyncio
 import json
 import time
+import sqlite3
 from pathlib import Path
 from typing import Dict, List, Optional, Generator, Tuple
 from datetime import datetime
@@ -39,6 +40,7 @@ from util import (
 )
 from extractors.extractor import extract_hedge_info
 from notifiers.notifier import send_to_wecom
+from db.repository import init_db, get_connection, announcement_exists, insert_announcement
 
 
 class CNInfoHedgeCrawler:
@@ -59,6 +61,7 @@ class CNInfoHedgeCrawler:
         self.keyword = keyword or config.DEFAULT_KEYWORD
         self.session: Optional[Session] = None
         self._executor: Optional[ThreadPoolExecutor] = None
+        self._db_conn: Optional[sqlite3.Connection] = None
 
         # 已下载的公告 ID 集合（用于去重）
         self.downloaded_ids = set()
@@ -76,7 +79,10 @@ class CNInfoHedgeCrawler:
         # 创建必要目录
         ensure_directories()
 
-        # 加载已下载的公告 ID
+        # 初始化数据库
+        init_db()
+
+        # 加载已下载的公告 ID（从数据库）
         self._load_downloaded_ids()
 
     def initialize(self) -> None:
@@ -124,21 +130,40 @@ class CNInfoHedgeCrawler:
         加载已下载的公告 ID
 
         需求：避免重复下载相同的公告
-        实现思路：从元数据文件中读取已成功下载的公告 ID
+        实现思路：从数据库和 CSV 中读取已成功下载的公告 ID（兼容旧数据）
         """
+        # 先从数据库加载
+        try:
+            conn = get_connection()
+            try:
+                rows = conn.execute("SELECT announcement_id FROM announcement").fetchall()
+                for row in rows:
+                    self.downloaded_ids.add(row[0])
+                if rows:
+                    logger.info(f"从数据库加载 {len(rows)} 条下载记录")
+            finally:
+                conn.close()
+        except Exception as e:
+            logger.warning(f"从数据库加载失败：{e}")
+
+        # 再从 CSV 加载（兼容旧数据）
         if not self.metadata_file.exists():
-            logger.info("未找到已下载记录，将全新开始")
             return
 
         try:
             df = pd.read_csv(self.metadata_file)
             if 'announcementId' in df.columns:
-                self.downloaded_ids = set(df['announcementId'].astype(str))
-                logger.info(f"已加载 {len(self.downloaded_ids)} 条下载记录")
+                csv_count = 0
+                for aid in df['announcementId'].astype(str):
+                    if aid not in self.downloaded_ids:
+                        self.downloaded_ids.add(aid)
+                        csv_count += 1
+                if csv_count > 0:
+                    logger.info(f"从 CSV 加载 {csv_count} 条旧记录")
             else:
                 logger.warning("元数据文件中缺少 announcementId 列")
         except Exception as e:
-            logger.error(f"加载已下载记录失败：{e}")
+            logger.error(f"加载 CSV 记录失败：{e}")
 
     @retry_on_failure()
     def fetch_announcement_list(self, page_num: int = 1, start_date: str = None, end_date: str = None) -> Optional[Dict]:
@@ -364,10 +389,10 @@ class CNInfoHedgeCrawler:
 
     def save_metadata_to_csv(self, announcements: List[Dict]) -> None:
         """
-        保存元数据到 CSV 文件
+        保存元数据到数据库（兼容 CSV 导出）
 
         需求：将公告信息保存为结构化数据
-        实现思路：使用 pandas 追加写入 CSV
+        实现思路：使用 SQLite 存储，同时导出 CSV 用于兼容
 
         Args:
             announcements: 公告信息列表
@@ -375,20 +400,54 @@ class CNInfoHedgeCrawler:
         if not announcements:
             return
 
-        df_new = pd.DataFrame(announcements)
+        conn = get_connection()
+        try:
+            for ann in announcements:
+                # 从 PDF 提取信息
+                pdf_path = config.get_data_dir() / generate_filename(ann['title'], ann['announcementId'], 'pdf')
+                if pdf_path.exists():
+                    try:
+                        info = extract_hedge_info(pdf_path, ann)
+                        ann['pdf_path'] = str(pdf_path)
+                        ann['varieties'] = info.get('varieties', '')
+                        ann['quota'] = info.get('quota', '')
+                        ann['period'] = info.get('period', '')
+                        ann['purpose'] = info.get('purpose', '')
+                        ann['authority'] = info.get('authority', '')
+                        ann['is_policy'] = info.get('is_policy', False)
+                        ann['is_irrelevant'] = info.get('is_irrelevant', False)
+                        ann['filter_reason'] = info.get('filter_reason', '')
+                    except Exception as e:
+                        logger.warning(f"PDF 提取失败：{e}")
 
+                # 插入数据库
+                insert_announcement(conn, ann)
+
+            conn.commit()
+            logger.info(f"元数据已保存到数据库，新增 {len(announcements)} 条记录")
+        except Exception as e:
+            logger.error(f"保存元数据失败：{e}")
+            conn.rollback()
+        finally:
+            conn.close()
+
+        # 导出 CSV（兼容旧功能）
+        self._export_csv(announcements)
+
+    def _export_csv(self, announcements: List[Dict]) -> None:
+        """导出 CSV 用于兼容"""
+        if not announcements:
+            return
+
+        df_new = pd.DataFrame(announcements)
         if self.metadata_file.exists():
-            # 读取现有数据并合并
             df_existing = pd.read_csv(self.metadata_file)
             df_combined = pd.concat([df_existing, df_new], ignore_index=True)
-            # 去除重复（基于 announcementId）
             df_combined = df_combined.drop_duplicates(subset=['announcementId'], keep='last')
             df_combined.to_csv(self.metadata_file, index=False, encoding='utf-8-sig')
         else:
-            # 新建文件
             df_new.to_csv(self.metadata_file, index=False, encoding='utf-8-sig')
-
-        logger.info(f"元数据已保存到 {self.metadata_file}，新增 {len(announcements)} 条记录")
+        logger.debug(f"CSV 已导出：{self.metadata_file}")
 
     def crawl_page(self, page_num: int, start_date: str = None, end_date: str = None) -> Tuple[List[Dict], int]:
         """
@@ -459,7 +518,13 @@ class CNInfoHedgeCrawler:
                 # 提取 PDF 关键信息并推送企业微信
                 try:
                     info = extract_hedge_info(save_path, announcement)
-                    send_to_wecom(info)
+
+                    # 检查是否为无关公告
+                    if info.get("is_irrelevant"):
+                        reason = info.get("filter_reason", "")
+                        logger.info(f"跳过推送 - 无关公告：{announcement['title']}（原因：{reason}）")
+                    else:
+                        send_to_wecom(info)
                 except Exception as e:
                     logger.warning(f"提取/推送失败，不影响下载流程：{e}")
             else:

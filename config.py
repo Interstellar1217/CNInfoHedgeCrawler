@@ -5,11 +5,32 @@
 配置文件模块
 需求：集中管理所有配置参数，便于修改和维护
 实现思路：使用类组织配置，支持通过字典或环境变量覆盖默认值
+
+环境变量支持：
+  - HEDGE_CRAWLER_KEYWORD_DEFAULT: 默认搜索关键词
+  - HEDGE_CRAWLER_FILTER_TITLE_KEYWORDS: 标题过滤关键词（JSON 数组字符串）
+  - HEDGE_CRAWLER_KEEP_TITLE_KEYWORDS: 标题保留关键词（JSON 数组字符串）
+  - HEDGE_CRAWLER_WECOM_WEBHOOK_URL: 企业微信 Webhook URL
 """
 
+import json
+import os
 import random
 from pathlib import Path
 from typing import Dict, List, Optional
+
+
+def _load_env_list(key: str, default: List[str]) -> List[str]:
+    """从环境变量加载列表，支持 JSON 数组或逗号分隔字符串"""
+    value = os.environ.get(f"HEDGE_CRAWLER_{key.upper()}", None)
+    if not value:
+        return default
+    try:
+        # 尝试解析 JSON 数组
+        return json.loads(value)
+    except json.JSONDecodeError:
+        # 回退到逗号分隔
+        return [x.strip() for x in value.split(",") if x.strip()]
 
 
 class Config:
@@ -21,7 +42,7 @@ class Config:
     SEARCH_URL = f"{BASE_URL}/new/commonUrl/pageOfSearch"
 
     # 搜索参数
-    DEFAULT_KEYWORD = "套期保值"
+    DEFAULT_KEYWORD = os.environ.get("HEDGE_CRAWLER_KEYWORD_DEFAULT", "套期保值")
     PAGE_SIZE = 30  # 每页公告数量
 
     # 完整的搜索 URL 示例
@@ -117,7 +138,22 @@ class Config:
 
     # 企业微信机器人配置
     # 在企业微信群中添加机器人后，将 Webhook URL 填入此处
-    WECOM_WEBHOOK_URL = ""
+    WECOM_WEBHOOK_URL = os.environ.get("HEDGE_CRAWLER_WECOM_WEBHOOK_URL", "")
+
+    # 公告过滤配置（标题关键词）- 支持环境变量自定义
+    # 环境变量：HEDGE_CRAWLER_FILTER_TITLE_KEYWORDS (JSON 数组或逗号分隔)
+    FILTER_TITLE_KEYWORDS = _load_env_list("filter_title_keywords", [
+        "摘要", "补充", "法律意见", "独立董事意见", "保荐",
+        "决议", "股东大会通知", "监事会", "中介", "审计", "评估",
+        "核查", "专项说明", "工作规则", "管理制度", "内部控制",
+    ])
+
+    # 即使含过滤词也保留的关键词
+    # 环境变量：HEDGE_CRAWLER_KEEP_TITLE_KEYWORDS (JSON 数组或逗号分隔)
+    KEEP_TITLE_KEYWORDS = _load_env_list("keep_title_keywords", ["更正", "更新", "修订", "补充"])
+
+    # 内容相关性判断（PDF 提取后）
+    REQUIRE_FIELDS = ["varieties", "quota"]  # 至少提取到一个核心字段
 
     @classmethod
     def get_random_delay(cls) -> float:

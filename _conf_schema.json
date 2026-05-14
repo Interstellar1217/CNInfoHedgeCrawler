@@ -8,5 +8,55 @@
     "description": "默认最大爬取页数",
     "type": "int",
     "default": 1
+  },
+  "wecom_webhook_url": {
+    "description": "企业微信 Webhook URL",
+    "type": "string",
+    "default": ""
+  },
+  "filter_title_keywords": {
+    "description": "标题过滤关键词列表（JSON 数组），标题含这些词的公告将被过滤",
+    "type": "list",
+    "default": ["摘要", "补充", "法律意见", "独立董事意见", "保荐", "决议", "股东大会通知", "监事会", "中介", "审计", "评估", "核查", "专项说明", "工作规则", "管理制度", "内部控制"]
+  },
+  "keep_title_keywords": {
+    "description": "标题保留关键词列表（JSON 数组），即使含过滤词也会保留",
+    "type": "list",
+    "default": ["更正", "更新", "修订", "补充"]
+  },
+  "variety_keywords": {
+    "description": "套保品种关键词（正则 OR 模式），可自定义商品/货币名称",
+    "type": "string",
+    "default": "外汇 | 美元|欧元|港元|港币|日元|英镑|人民币|铜|铝|锌|镍|铅|锡|黄金|白银|原油|天然气|橡胶|大豆|玉米|小麦|棉花|铁矿石|螺纹钢|热轧卷板|PTA|甲醇|乙二醇|聚乙烯|聚丙烯|碳酸锂|氢氧化锂|锂"
+  },
+  "quota_trigger_words": {
+    "description": "额度触发词（正则 OR 模式）",
+    "type": "string",
+    "default": "不超过 | 上限|额度|合约价值|保证金|权利金"
+  },
+  "quota_currency_suffix": {
+    "description": "额度单位后缀（正则 OR 模式）",
+    "type": "string",
+    "default": "(?:亿 | 万)?(?:美元|欧元|港元|港币|日元|英镑|人民币|元|USD|EUR|HKD|JPY|GBP|CNY)"
+  },
+  "period_trigger_words": {
+    "description": "有效期触发词（正则 OR 模式）",
+    "type": "string",
+    "default": "有效期 | 授权期限|期限|额度有效期"
+  },
+  "purpose_trigger_words": {
+    "description": "套保目的触发词（正则 OR 模式）",
+    "type": "string",
+    "default": "目的 | 为了|旨在|以"
+  },
+  "purpose_actions": {
+    "description": "套保目的动作（正则 OR 模式），如规避风险、锁定成本等",
+    "type": "string",
+    "default": "规避.{0,20}?风险 | 锁定.{0,20}?成本 | 降低.{0,20}?风险 | 对冲.{0,20}?风险 | 防范.{0,20}?风险"
+  },
+  "authority_names": {
+    "description": "授权机构名称（正则 OR 模式）",
+    "type": "string",
+    "default": "董事会 | 股东大会 | 股东会"
   }
 }

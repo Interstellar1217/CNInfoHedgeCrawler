@@ -48,7 +48,7 @@ python -m notifiers.notifier --id 1225015373 --send --webhook "https://..."
 ### 核心数据流
 
 ```
-巨潮 API → 公告列表 JSON → 去重(CSV) → 下载PDF → 提取字段 → 推送企业微信
+巨潮 API → 公告列表 JSON → 去重 (CSV) → 下载 PDF → 提取字段 → 推送企业微信
 ```
 
 ### 模块职责
@@ -60,8 +60,8 @@ python -m notifiers.notifier --id 1225015373 --send --webhook "https://..."
 | `util.py` | 工具函数：日志、延时、文件名生成、重试装饰器 |
 | `extractors/extractor.py` | PDF 文本提取与正则字段解析 |
 | `notifiers/notifier.py` | 企业微信推送 + CLI 工具 |
-| `dify_plugin/` | Dify AI 平台插件 |
 | `main.py` | AstrBot 插件入口 |
+| `dify_plugin/` | Dify AI 平台插件 |
 
 ### 同步/异步架构设计
 
@@ -74,7 +74,7 @@ async def _run_in_executor(self, func, *args, **kwargs):
     return await loop.run_in_executor(None, lambda: func(*args, **kwargs))
 ```
 
-`CNInfoHedgeCrawler` 包含运行时检测，如果在异步环境中直接调用（而非通过线程池），会抛出 `RuntimeError`。
+`CNInfoHedgeCrawler` 和 `CNInfoHedgeTool` 包含运行时检测，如果在异步环境中直接调用（而非通过线程池），会抛出 `RuntimeError`。
 
 ### 关键设计
 
@@ -89,33 +89,6 @@ async def _run_in_executor(self, func, *args, **kwargs):
 
 ---
 
-## 项目结构
-
-```
-CNInfoHedgeCrawler/
-├── config.py                  # 配置中心（URL、请求头、延时、重试、分类/市场代码、Webhook）
-├── crawler.py                 # 爬虫主逻辑（CNInfoHedgeCrawler 类）
-├── util.py                    # 工具函数（日志、延时、文件名生成、重试装饰器）
-├── main.py                    # AstrBot 插件入口
-├── extractors/
-│   ├── __init__.py
-│   └── extractor.py           # PDF 文本提取与正则字段解析
-├── notifiers/
-│   ├── __init__.py
-│   └── notifier.py            # 企业微信推送 + CLI 工具
-├── dify_plugin/
-│   └── cninfo_hedge/
-│       ├── main.py            # Dify 插件入口
-│       └── __init__.py
-├── data/
-│   ├── announcements_metadata.csv
-│   └── *.pdf
-├── requirements.txt
-└── README.md
-```
-
----
-
 ## 核心模块
 
 ### config.py
@@ -126,71 +99,53 @@ CNInfoHedgeCrawler/
 - **分类代码**: 年报/半年报/季报/董事会/监事会等
 - **市场代码**: 沪市/深市/科创板/创业板/北交所
 - **Webhook**: WECOM_WEBHOOK_URL
+- **get_search_params()**: 构造 API 请求参数
 
 ### crawler.py (CNInfoHedgeCrawler)
 - `fetch_announcement_list()` - 获取公告列表（@retry_on_failure）
 - `parse_announcements()` - 解析 JSON，提取标题/ID/日期/股票代码
 - `generate_pdf_url()` - 构造 PDF 下载链接（优先 STATIC_URL + adjunctUrl）
 - `download_pdf()` - 流式下载，非 PDF 内容返回 False
-- `save_metadata()` - 追加写入 CSV，去重
-- `crawl_page()` - 爬取单页，返回 (下载列表, 本页总数)
-- `crawl_all()` - 自动翻页，使用 crawl_page 返回值统计，避免重复请求
+- `save_metadata_to_csv()` - 追加写入 CSV，去重
+- `crawl_page()` - 爬取单页，返回 (下载列表，本页总数)
+- `crawl_all()` - 自动翻页，使用 crawl_page 返回值统计
 
 ### util.py
 - `ensure_directories()` - 创建数据目录
-- `random_delay()` - 随机延时
+- `random_delay()` / `random_delay_async()` - 随机延时
 - `generate_filename()` - 生成 `{title}_{announcementId}.pdf`
-- `save_metadata()` - 保存元数据到 CSV
-- `retry_on_failure()` - 重试装饰器
+- `retry_on_failure()` - 支持同步/异步的重试装饰器
 
 ### extractors/extractor.py
 - `_normalize()` - 去除所有空白字符，消除 PDF 排版噪声
-- 正则提取字段：
-  - 品种：`_RE_VARIETY` - 外汇/美元/铜/黄金/大豆等 30+ 品种
+- 正则提取字段（作用于标准化后的紧凑文本）：
+  - 品种：`_RE_VARIETY` - 30+ 种商品/货币关键词
   - 额度：`_RE_QUOTA` - 去重，过滤零值
   - 有效期：`_RE_PERIOD` - 绝对区间 或 N 个月/N 年
   - 目的：`_RE_PURPOSE` - 规避/锁定/降低风险
   - 授权机构：`_RE_AUTHORITY` - 董事会/股东大会
-- `extract_hedge_info()` - 返回字典包含 org_id 字段
-- `is_policy` - 标题含"管理制度"自动跳过推送
+- `extract_hedge_info()` - 返回结构化字典（含 org_id, is_policy）
 
 ### notifiers/notifier.py
-- `build_markdown()` - 构建 Markdown 消息（包含 org_id 链接）
-- `send_to_wecom()` - 同步推送 Markdown 卡片
-- `send_to_wecom_async()` - 异步推送（使用 asyncio.to_thread()）
+- `_build_markdown()` - 构建 Markdown 消息
+- `send_to_wecom()` - 同步推送（CLI、Dify 使用）
+- `send_to_wecom_async()` - 异步推送（`asyncio.to_thread()`，AstrBot 使用）
 - CLI 模式：`--id`, `--batch`, `--send`, `--webhook`
 
 ---
 
-## 数据流
+## 插件
 
-1. 爬取：LIST_API → JSON → 去重（downloaded_ids）→ 下载 PDF → 追加 CSV
-2. 提取：PDF → extract_hedge_info() → 结构化字段（包含 org_id）
-3. 推送：is_policy=False → Markdown 卡片 → WeCom Webhook
+### Dify 插件（dify_plugin/cninfo_hedge/）
+- **用途**: 为 AI Agent 提供 `search_announcements` 工具
+- **部署**: 复制到 Dify API 插件目录或打包上传到 Dify 云
+- **详细文档**: [dify_plugin/README.md](dify_plugin/README.md)
 
----
-
-## PDF 字段提取逻辑
-
-`extractors/extractor.py` 使用正则从 PDF 提取结构化字段：
-
-1. **文本标准化**：`_normalize()` 去除所有空白字符，消除 PDF 排版噪声
-2. **正则提取**（均作用于标准化后的紧凑文本）：
-   - 品种：`_RE_VARIETY` - 外汇/美元/铜/黄金/大豆等 30+ 品种
-   - 额度：`_RE_QUOTA` - 去重，过滤零值
-   - 有效期：`_RE_PERIOD` - 绝对区间 或 N 个月/N 年
-   - 目的：`_RE_PURPOSE` - 规避/锁定/降低风险
-   - 授权机构：`_RE_AUTHORITY` - 董事会/股东大会
-
----
-
-## 企业微信推送
-
-`notifiers/notifier.py` 支持两种模式：
-- **同步** `send_to_wecom()` - CLI、Dify 插件使用
-- **异步** `send_to_wecom_async()` - AstrBot 插件使用（`asyncio.to_thread()`）
-
-推送格式为 Markdown 卡片，包含：公司、标题、日期、品种、额度、有效期、目的、授权机构、原文链接（需要 org_id）。
+### AstrBot 插件（main.py）
+- **用途**: QQ/微信聊天命令查询
+- **命令**: `/套保查询 [关键词] [日期]`, `/套保 [日期]`
+- **部署**: 安装 astrbot 依赖后，将项目作为插件加载
+- **详细文档**: 参见 main.py 源码
 
 ---
 
@@ -207,24 +162,41 @@ CNInfoHedgeCrawler/
 | `DATA_DIR` | "data" | 数据存储目录 |
 | `WECOM_WEBHOOK_URL` | "" | 企业微信 Webhook URL |
 
+### 环境变量配置（AstrBot/Dify 插件适用）
+
+以下环境变量可在 `_conf_schema.json` 中配置，通过 AstrBot 插件界面设置：
+
+| 环境变量 | 默认值 | 说明 |
+|----------|--------|------|
+| `HEDGE_CRAWLER_KEYWORD_DEFAULT` | "套期保值" | 默认搜索关键词 |
+| `HEDGE_CRAWLER_WECOM_WEBHOOK_URL` | "" | 企业微信 Webhook URL |
+| `HEDGE_CRAWLER_FILTER_TITLE_KEYWORDS` | JSON 数组 | 标题过滤关键词列表 |
+| `HEDGE_CRAWLER_KEEP_TITLE_KEYWORDS` | JSON 数组 | 标题保留关键词列表 |
+| `HEDGE_CRAWLER_VARIETY_KEYWORDS` | 正则 OR 模式 | 套保品种关键词 |
+| `HEDGE_CRAWLER_QUOTA_TRIGGER_WORDS` | 正则 OR 模式 | 额度触发词 |
+| `HEDGE_CRAWLER_QUOTA_CURRENCY_SUFFIX` | 正则 OR 模式 | 额度单位后缀 |
+| `HEDGE_CRAWLER_PERIOD_TRIGGER_WORDS` | 正则 OR 模式 | 有效期触发词 |
+| `HEDGE_CRAWLER_PURPOSE_TRIGGER_WORDS` | 正则 OR 模式 | 目的触发词 |
+| `HEDGE_CRAWLER_PURPOSE_ACTIONS` | 正则 OR 模式 | 目的动作（规避风险等） |
+| `HEDGE_CRAWLER_AUTHORITY_NAMES` | 正则 OR 模式 | 授权机构名称 |
+
+### 正则规则说明
+
+`extractors/extractor.py` 中的正则规则已设置为**宽松匹配**，严格模式已注释掉。
+
+**默认宽松策略**：
+- 品种匹配：触发词（套期保值/套保/对冲/期货/远期）→ 最多 50 字 → 品种关键词
+- 额度匹配：更多触发词（不超过/上限/额度/合约价值/保证金/拟使用/计划投入）→ 最多 20 字 → 金额
+- 有效期匹配：支持"年月日"、"N 个月"、"N 年"、"N 天"多种格式
+- 目的匹配：支持规避/锁定/降低/对冲/防范/管理/减少/平滑等多种动作
+
+**用户自定义正则**：
+可以在 `_conf_schema.json` 中修改默认正则，或在 AstrBot 中通过环境变量覆盖。
+例如设置 `HEDGE_CRAWLER_VARIETY_KEYWORDS` 为 `"外汇 | 美元 | 欧元|新加坡元"` 来添加新币种。
+
 ### 支持的套保品种
 
 外汇、美元、欧元、港元、日元、英镑、铜、铝、锌、镍、铅、锡、黄金、白银、原油、天然气、橡胶、大豆、玉米、小麦、棉花、铁矿石、螺纹钢、热轧卷板、PTA、甲醇、乙二醇、聚乙烯、聚丙烯、碳酸锂、氢氧化锂
-
----
-
-## 插件
-
-### Dify 插件（dify_plugin/cninfo_hedge/）
-- **用途**: 为 AI Agent 提供工具
-- **工具**: `search_announcements` - 搜索公告返回 JSON
-- **部署**: 复制到 Dify API 插件目录或打包上传到 Dify 云
-
-### AstrBot 插件（main.py）
-- **用途**: QQ/微信聊天命令查询
-- **命令**: `/套保查询 [关键词] [日期]`, `/套保 [日期]`
-- **返回**: 聊天消息格式（前 5 条摘要）
-- **部署**: 安装 astrbot 依赖后，将项目作为插件加载
 
 ---
 
@@ -255,7 +227,6 @@ python -m notifiers.notifier "data/xxx.pdf"
 ```
 
 ### 查看提取的字段
-使用 `extractors/extractor.py` 的 `extract_hedge_info()` 函数：
 ```python
 from extractors.extractor import extract_hedge_info
 from pathlib import Path
@@ -265,29 +236,48 @@ print(info)
 
 ---
 
-## 开发注意事项
+## 常见问题与错误处理
 
-1. **同步/异步边界**：爬虫核心是同步的，在异步环境中必须通过线程池调用。
+### 1. 请求被反爬拦截
+- 检查 `User-Agent` 是否需要更新
+- 确认 `curl_cffi` 版本 >= 0.7.0
+- 增加请求延时 (`MIN_DELAY`, `MAX_DELAY`)
 
-2. **正则规则修改**：所有正则都作用于 `_normalize()` 处理后的紧凑文本（去除所有空白），修改时无需考虑 PDF 排版问题。
+### 2. PDF 提取字段不准确
+- 各公司公告格式差异较大，先用预览命令查看提取效果
+- 调整 `extractors/extractor.py` 中的正则规则
+- 所有正则作用于 `_normalize()` 处理后的紧凑文本
 
-3. **企业微信推送测试**：使用 `--webhook` 参数临时指定测试 Webhook URL。
+### 3. 异步环境调用错误
+- 爬虫是同步的，在异步环境中必须通过 `asyncio.to_thread()` 或 `ThreadPoolExecutor` 调用
+- AstrBot 插件中已实现 `_run_in_executor()` 方法
 
-4. **断点续爬**：已下载记录保存在 `data/announcements_metadata.csv`，删除此文件将重新爬取所有公告。
+### 4. 企业微信推送失败
+- 检查 `WECOM_WEBHOOK_URL` 是否配置
+- 使用 `--webhook` 参数临时指定测试 URL
+- 注意频率限制，批量推送时添加延时
 
-5. **PDF URL 构造**：优先使用 `STATIC_URL + adjunctUrl`，兜底使用 `PDF_DOWNLOAD_URL` 接口。
-
-6. **download_pdf 逻辑**：非 PDF 内容时返回 False，调用方需要处理返回值。
-
-7. **org_id 字段**：extract_hedge_info 返回的字典中包含 org_id，用于构建企业微信推送的原文链接。
+### 5. 断点续爬
+- 已下载记录保存在 `data/announcements_metadata.csv`
+- 删除此文件将重新爬取所有公告
 
 ---
 
-## 最近更新
+## 开发注意事项
 
-- 修复 `download_pdf` 逻辑：非 PDF 内容时返回 False
-- 添加 `org_id` 字段到 `extract_hedge_info` 返回字典
-- 优化 `crawl_all` 统计逻辑：使用 `crawl_page` 返回值避免重复请求
-- 修正 `util.py` 文档字符串
-- 优化 `extractor.py` 导入位置（`datetime` 移到顶部）
-- 删除冗余目录：`core/`, `astrbot_plugin/`, `data/t2i_templates/`, `data/temp/`
+1. **同步/异步边界**: 爬虫核心是同步的，在异步环境中必须通过线程池调用。
+
+2. **正则规则修改**: 所有正则都作用于 `_normalize()` 处理后的紧凑文本（去除所有空白），修改时无需考虑 PDF 排版问题。
+
+3. **环境变量优先级**: 环境变量 > 代码默认值。用户可通过 AstrBot 插件界面设置环境变量来自定义正则规则。
+
+4. **宽松匹配策略**: 默认正则已设置为宽松模式，严格模式已注释在代码中作为参考。如果误匹配过多，可以：
+   - 缩小 `.{0,50}?` 中的最大距离（如改为 `.{0,20}?`）
+   - 减少触发词或品种关键词列表
+   - 启用代码中注释掉的严格模式正则
+
+3. **download_pdf 逻辑**: 非 PDF 内容时返回 False，调用方需要处理返回值。
+
+4. **org_id 字段**: `extract_hedge_info` 返回的字典中包含 org_id，用于构建企业微信推送的原文链接。
+
+5. **制度类文件过滤**: 标题含"管理制度"的公告，`is_policy=True`，应跳过推送。

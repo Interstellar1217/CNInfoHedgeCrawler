@@ -106,6 +106,11 @@ async def send_to_wecom_async(info: dict, webhook_url: str = None) -> bool:
         logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
         return False
 
+    if info.get("is_irrelevant"):
+        reason = info.get("filter_reason", "")
+        logger.info(f"无关公告，跳过推送：{info.get('title', '')}（原因：{reason}）")
+        return False
+
     url = webhook_url or config.WECOM_WEBHOOK_URL
     if not url:
         logger.warning("未配置企业微信 Webhook URL，请在 config.py 中设置 WECOM_WEBHOOK_URL")
@@ -145,6 +150,11 @@ def send_to_wecom(info: dict, webhook_url: str = None) -> bool:
 
     if info.get("is_policy"):
         logger.info(f"管理制度类文件，跳过推送：{info.get('title', '')}")
+        return False
+
+    if info.get("is_irrelevant"):
+        reason = info.get("filter_reason", "")
+        logger.info(f"无关公告，跳过推送：{info.get('title', '')}（原因：{reason}）")
         return False
 
     url = webhook_url or config.WECOM_WEBHOOK_URL
