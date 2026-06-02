@@ -4,13 +4,6 @@
 """
 冒烟测试脚本
 
-快速验证核心功能是否正常工作：
-1. 巨潮连通性测试
-2. 查询接口测试
-3. PDF 下载测试
-4. PDF 提取测试
-5. 企业微信推送测试（可选）
-
 用法：
     python smoke_test.py
 """
@@ -21,10 +14,10 @@ import time
 import subprocess
 from pathlib import Path
 
-# 添加项目路径
 sys.path.insert(0, str(Path(__file__).parent))
 
-import requests
+from curl_cffi import requests
+from curl_cffi.requests import Session as CurlSession
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -59,30 +52,27 @@ def test_cninfo_connectivity():
             elapsed = time.time() - t0
             print(f"  [{i+1}] 失败：{e}, 耗时：{elapsed:.2f}s")
 
-    print("\n[1.2] requests 测试...")
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    }
+    print("\n[1.2] curl_cffi Session 测试（模拟爬虫实际行为）...")
     for i in range(2):
         t0 = time.time()
         try:
-            r = requests.get("https://www.cninfo.com.cn", headers=headers, timeout=15, verify=False)
+            session = CurlSession(impersonate="chrome136")
+            r = session.get("https://www.cninfo.com.cn", timeout=15)
             elapsed = time.time() - t0
             print(f"  [{i+1}] 状态码：{r.status_code}, 耗时：{elapsed:.2f}s")
+            session.close()
         except Exception as e:
             elapsed = time.time() - t0
             print(f"  [{i+1}] 失败：{e}, 耗时：{elapsed:.2f}s")
 
     print("\n[1.3] 巨潮查询接口（爬虫实际用的）...")
     query_url = config.LIST_API
-    query_headers = dict(config.HEADERS)
     query_data = config.get_search_params(keyword="套期保值", page_num=1)
 
     for i in range(2):
         t0 = time.time()
         try:
-            from curl_cffi import requests as curl_requests
-            session = curl_requests.Session(impersonate="chrome136")
+            session = CurlSession(impersonate="chrome136")
             r = session.post(query_url, data=query_data, timeout=15)
             elapsed = time.time() - t0
             print(f"  [{i+1}] 状态码：{r.status_code}, 耗时：{elapsed:.2f}s")
@@ -113,8 +103,7 @@ def test_pdf_download():
 
         t0 = time.time()
         try:
-            from curl_cffi import requests as curl_requests
-            session = curl_requests.Session(impersonate="chrome136")
+            session = CurlSession(impersonate="chrome136")
             r = session.get(pdf_url, timeout=30)
             elapsed = time.time() - t0
 

@@ -15,7 +15,6 @@ import json
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Any
-from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
 from curl_cffi import requests
@@ -33,6 +32,16 @@ spec = importlib.util.spec_from_file_location("config", CONFIG_PATH)
 config_module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(config_module)
 project_config = config_module.config
+
+
+def _assert_no_running_loop(message: str) -> None:
+    """断言当前没有运行中的事件循环，避免在异步环境中误用同步代码。"""
+    try:
+        asyncio.get_running_loop()
+        raise RuntimeError(message)
+    except RuntimeError as e:
+        if "no running event loop" not in str(e):
+            raise
 
 
 class CNInfoHedgeTool:
@@ -65,17 +74,10 @@ class CNInfoHedgeTool:
 
         注意：此方法使用同步等待（future.result()），仅适用于同步环境。
         """
-        # 运行时检测：如果在异步环境中被调用，抛出明确的错误
-        try:
-            asyncio.get_running_loop()
-            raise RuntimeError(
-                "CNInfoHedgeTool 是同步工具，不能在异步环境中直接调用。"
-                "请使用 asyncio.to_thread() 或在单独进程中运行。"
-            )
-        except RuntimeError as e:
-            # 如果没有运行中的事件循环，这是预期的行为
-            if "no running event loop" not in str(e):
-                raise
+        _assert_no_running_loop(
+            "CNInfoHedgeTool 是同步工具，不能在异步环境中直接调用。"
+            "请使用 asyncio.to_thread() 或在单独进程中运行。"
+        )
 
         if self._executor is None:
             self.initialize()

@@ -15,6 +15,7 @@ https://developer.work.weixin.qq.com/document/path/91770
 """
 
 import asyncio
+import csv
 from pathlib import Path
 from typing import Optional
 
@@ -176,35 +177,35 @@ def preview_markdown(info: dict) -> None:
     print("=" * 60 + "\n")
 
 
-def load_metadata(csv_path: Path = None) -> Optional["pd.DataFrame"]:
-    """加载 announcements_metadata.csv，返回 DataFrame，失败返回 None"""
+def load_metadata(csv_path: Path = None) -> list[dict]:
+    """加载 announcements_metadata.csv，返回字典列表，失败返回空列表"""
     try:
-        import pandas as pd
         p = csv_path or config.get_data_dir() / config.METADATA_FILE
         if not p.exists():
             logger.warning(f"元数据文件不存在：{p}")
-            return None
-        return pd.read_csv(p, encoding="utf-8-sig", dtype={"announcementId": str, "secCode": str})
+            return []
+        with open(p, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            return list(reader)
     except Exception as e:
         logger.error(f"加载元数据失败：{e}")
-        return None
+        return []
 
 
-def lookup_announcement(ann_id: str, df: "pd.DataFrame") -> dict:
-    """从 DataFrame 中按 announcementId 查找元数据，返回 announcement dict"""
-    rows = df[df["announcementId"] == str(ann_id)]
-    if rows.empty:
-        return {}
-    row = rows.iloc[0]
-    return {
-        "announcementId": str(row.get("announcementId", "")),
-        "secCode":        str(row.get("secCode", "")),
-        "secName":        str(row.get("secName", "")),
-        "orgId":          str(row.get("orgId", "")),
-        "title":          str(row.get("title", "")),
-        "publishTime":    str(row.get("publishTime", "")),
-        "adjunctUrl":     str(row.get("adjunctUrl", "")),
-    }
+def lookup_announcement(ann_id: str, rows: list[dict]) -> dict:
+    """从字典列表中按 announcementId 查找元数据，返回 announcement dict"""
+    for row in rows:
+        if row.get("announcementId", "") == str(ann_id):
+            return {
+                "announcementId": str(row.get("announcementId", "")),
+                "secCode":        str(row.get("secCode", "")),
+                "secName":        str(row.get("secName", "")),
+                "orgId":          str(row.get("orgId", "")),
+                "title":          str(row.get("title", "")),
+                "publishTime":    str(row.get("publishTime", "")),
+                "adjunctUrl":     str(row.get("adjunctUrl", "")),
+            }
+    return {}
 
 
 def pdf_path_from_metadata(row: dict, data_dir: Path = None) -> Optional[Path]:
@@ -274,9 +275,8 @@ if __name__ == "__main__":
         pdf_path = Path(args.pdf)
         stem = pdf_path.stem
         ann_id = stem.rsplit("_", 1)[-1] if "_" in stem else ""
-        # 优先从 CSV 查元数据
         announcement = {}
-        if df is not None and ann_id:
+        if df and ann_id:
             announcement = lookup_announcement(ann_id, df)
         if not announcement:
             announcement = {
@@ -289,7 +289,7 @@ if __name__ == "__main__":
 
     # ── 模式 2：指定公告 ID ───────────────────────────────────────────────────
     elif args.ann_id:
-        if df is None:
+        if not df:
             print("无法加载元数据 CSV，请检查 data/announcements_metadata.csv")
             sys.exit(1)
         announcement = lookup_announcement(args.ann_id, df)
@@ -304,13 +304,13 @@ if __name__ == "__main__":
 
     # ── 模式 3：批量处理 ──────────────────────────────────────────────────────
     elif args.batch:
-        if df is None:
+        if not df:
             print("无法加载元数据 CSV")
             sys.exit(1)
         total, ok_count, skip_count = len(df), 0, 0
         print(f"CSV 共 {total} 条记录，开始处理...\n")
-        for _, row in df.iterrows():
-            announcement = row.to_dict()
+        for row in df:
+            announcement = dict(row)
             announcement["announcementId"] = str(announcement.get("announcementId", ""))
             pdf_path = pdf_path_from_metadata(announcement)
             if pdf_path is None:
@@ -325,7 +325,7 @@ if __name__ == "__main__":
             if args.send:
                 if send_to_wecom(info, webhook_url=args.webhook):
                     ok_count += 1
-                import time; time.sleep(0.5)  # 避免触发频率限制
+                import time; time.sleep(0.5)
         print(f"\n批量完成：推送 {ok_count} 条，跳过 {skip_count} 条")
 
     else:

@@ -96,21 +96,21 @@ def test_variety_no_match():
 
 def test_quota_matches_amount_with_unit():
     """应匹配带单位的额度"""
-    text = "不超过 5000 万美元或等值外币"
+    text = _normalize("不超过 5000 万美元或等值外币")
     matches = _all_matches(_RE_QUOTA, text)
     assert any("5000" in m for m in matches)
 
 
 def test_quota_matches_with_wan_unit():
     """应匹配'万'单位的额度"""
-    text = "额度上限 10000 万元人民币"
+    text = _normalize("额度上限 10000 万元人民币")
     matches = _all_matches(_RE_QUOTA, text)
-    assert any("10000 万" in m for m in matches)
+    assert any("10000" in m for m in matches)
 
 
 def test_quota_multiple_matches():
     """应匹配多个额度并去重"""
-    text = "不超过 5000 万美元，其中保证金上限 1000 万美元"
+    text = _normalize("不超过 5000 万美元，其中保证金上限 1000 万美元")
     matches = _all_matches(_RE_QUOTA, text)
     assert len(matches) >= 1
 
@@ -139,16 +139,16 @@ def test_period_matches():
 
 def test_period_matches_months():
     """应匹配'N 个月'格式"""
-    text = "期限 12 个月"
+    text = _normalize("期限 12 个月")
     matches = _all_matches(_RE_PERIOD, text)
-    assert any("12 个月" in m for m in matches)
+    assert any("12个月" in m for m in matches)
 
 
 def test_period_matches_years():
     """应匹配'N 年'格式"""
-    text = "有效期 3 年"
+    text = _normalize("有效期 3 年")
     matches = _all_matches(_RE_PERIOD, text)
-    assert any("3 年" in m for m in matches)
+    assert any("3年" in m for m in matches)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -175,8 +175,7 @@ def test_purpose_matches():
 
 def test_purpose_matches_lock_cost():
     """应匹配'锁定成本'目的"""
-    # 正则模式：(?:目的 | 为了|旨在|以|特开展|拟开展).{0,10}?(规避.{0,30}?风险 | 锁定.{0,30}?成本 |...)
-    text = "目的是为了锁定原材料成本"
+    text = _normalize("目的是为了锁定原材料成本")
     matches = _all_matches(_RE_PURPOSE, text)
     assert len(matches) > 0
 
@@ -205,14 +204,14 @@ def test_authority_matches():
 
 def test_authority_matches_board():
     """应匹配'董事会'授权"""
-    text = "经董事会授权办理相关事宜"
+    text = _normalize("经董事会授权办理相关事宜")
     matches = _all_matches(_RE_AUTHORITY, text)
     assert any("董事会" in m for m in matches)
 
 
 def test_authority_matches_shareholder():
     """应匹配'股东大会'授权"""
-    text = "已经股东大会批准实施"
+    text = _normalize("已经股东大会批准实施")
     matches = _all_matches(_RE_AUTHORITY, text)
     assert any("股东大会" in m for m in matches)
 

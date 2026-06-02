@@ -19,6 +19,9 @@ ENV/
 # Claude Code 本地配置
 .claude/
 
+# 编辑器历史备份（不提交）
+.history/
+
 # CodeBuddy 本地配置和计划
 .codebuddy/
 
@@ -32,6 +35,7 @@ dify_plugin.log
 data/*.pdf
 data/*.PDF
 data/*.csv
+data/*.db
 
 # 日志文件
 logs/
@@ -50,9 +54,5 @@ Thumbs.db
 .coverage
 htmlcov/
 
-# 临时文件和缓存
-data/temp/
-data/t2i_templates/
-core/
-astrbot_plugin/
-.history/
+# AstrBot 运行时配置（不入库）
+data/cmd_config.json

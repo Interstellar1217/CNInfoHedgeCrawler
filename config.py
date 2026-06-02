@@ -3,8 +3,6 @@
 
 """
 配置文件模块
-需求：集中管理所有配置参数，便于修改和维护
-实现思路：使用类组织配置，支持通过字典或环境变量覆盖默认值
 
 环境变量支持：
   - HEDGE_CRAWLER_KEYWORD_DEFAULT: 默认搜索关键词
@@ -157,10 +155,6 @@ class Config:
 
     @classmethod
     def get_random_delay(cls) -> float:
-        """
-        获取随机延时时间
-        实现思路：在最小和最大延时之间生成随机浮点数
-        """
         return random.uniform(cls.MIN_DELAY, cls.MAX_DELAY)
 
     @classmethod
@@ -172,24 +166,6 @@ class Config:
                           stock_market: str = None,
                           start_date: str = None,
                           end_date: str = None) -> Dict:
-        """
-        构造搜索请求参数
-
-        需求：生成巨潮资讯公告搜索 API 所需的参数
-        实现思路：根据实际抓包分析得出的参数结构
-
-        Args:
-            keyword: 搜索关键词
-            page_num: 页码
-            page_size: 每页数量
-            category: 公告分类
-            stock_market: 股票市场
-            start_date: 开始日期 YYYY-MM-DD
-            end_date: 结束日期 YYYY-MM-DD
-
-        Returns:
-            参数字典
-        """
         params = {
             "pageNum": page_num,
             "pageSize": page_size or cls.PAGE_SIZE,
